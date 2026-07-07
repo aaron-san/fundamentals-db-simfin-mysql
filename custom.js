@@ -22,7 +22,9 @@ window.onload = function () {
   const coverPageContainer = document.querySelector("#cover-page-container");
 
   // Prepend the cover page container to the main element
-  mainElement.prepend(coverPageContainer);
+  if (mainElement && coverPageContainer) {
+    mainElement.prepend(coverPageContainer);
+  }
 };
 
 function addSmoothToggleButtons() {
@@ -63,17 +65,14 @@ function addSmoothToggleButtons() {
     .querySelectorAll(".jp-InputPrompt, .jp-OutputPrompt")
     .forEach((el) => (el.style.display = "none"));
 
-document.querySelectorAll('.jp-CodeCell pre').forEach(pre => {
-  if (pre.textContent.includes('IPython.display')) {
-    const cell = pre.closest('.jp-CodeCell');
-    if (cell) {
-      cell.style.display = 'none';
-      cell.style.color = 'blue';
+  document.querySelectorAll(".jp-CodeCell pre").forEach((pre) => {
+    if (pre.textContent.includes("IPython.display")) {
+      const cell = pre.closest(".jp-CodeCell");
+      if (cell) {
+        cell.style.display = "none";
+      }
     }
-  }
-});
-
-
+  });
 }
 
 document.addEventListener("DOMContentLoaded", addSmoothToggleButtons);
