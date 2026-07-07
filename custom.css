@@ -1,4 +1,3 @@
-
 html,
 body,
 .jp-LabShell,
@@ -13,7 +12,7 @@ body,
   repeat-y center / cover; */
   /* background: url("images/Painted White.jpg"); */
   overflow-wrap: break-word;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Optional: remove padding around output wrapper */
@@ -49,26 +48,23 @@ div.text_cell_render,
 
 /* --- Output area background --- */
 
-
-
 main {
-    /* width: 80%; */
-    padding: 1rem 2rem 0;
-    margin: 22rem 8rem 8rem;
-    background: white;
-    border: 1px solid rgb(210, 210, 210);
-    /* position: relative;
+  /* width: 80%; */
+  padding: 2rem 2rem 0;
+  margin: 20rem 8rem 8rem;
+  background: white;
+  border: 1px solid rgb(210, 210, 210);
+  /* position: relative;
     z-index: 10; */
-    /* background: url("images/Painted White.jpg"); */
+  /* background: url("images/Painted White.jpg"); */
 }
 
-
 @media (max-width: 600px) {
-    main {
-        margin: 18rem 0;
-        padding: 0 4px;
-        border: none;
-    }
+  main {
+    margin: 12rem 0;
+    padding: 0 4px;
+    border: none;
+  }
 }
 
 /* --- Toggle button --- */
@@ -81,7 +77,7 @@ main {
   background-color: #f9f8f8 !important;
   border: 1px solid #e9e8e8 !important;
   color: #555555 !important;
-  transition: all .35s ease;
+  transition: all 0.35s ease;
 }
 .toggle-btn:hover {
   background-color: #efefef !important;
@@ -97,7 +93,7 @@ main {
     opacity 0.35s ease;
 }
 .code-transition.show {
-  max-height: 500px;
+  max-height: 99999px;
   opacity: 1;
 }
 
@@ -108,7 +104,6 @@ body {
 img {
   width: 600px;
 }
-
 
 /* #cover-page-container {
     position: relative;
@@ -152,66 +147,66 @@ img {
     width: 100%;
 } */
 
-
-
-
 #cover-page-container {
-    position: absolute; /* Allows positioning of the image and text within the container */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 50px;
-    z-index: 1;
+  position: absolute; /* Allows positioning of the image and text within the container */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 1;
 }
 
 #cover-page-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 400px;
-    /* object-fit: cover; Ensures the image covers the entire container */
-    z-index: -1; /* Sends the image to the background */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  /* object-fit: cover; Ensures the image covers the entire container */
+  z-index: -1; /* Sends the image to the background */
 }
 
 #title-container {
-    /* position: absolute; Positioning on top of the image */
-    /* top: 50%; Position vertically in the middle */
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); Centers the text horizontally and vertically */
-    color: white; /* Text color */
-    text-align: center; /* Centers the text */
-    padding: 8rem 0 2rem;
+  /* position: absolute; Positioning on top of the image */
+  /* top: 50%; Position vertically in the middle */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); Centers the text horizontally and vertically */
+  color: rgb(100, 100, 100);
+  text-align: center; /* Centers the text */
+  padding: 1rem 6rem;
+  /* width: fit-content; */
+  background: white;
+  border-radius: 6px;
+  margin: 6rem auto 2rem;
 }
 
 #meta-data-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-    color: rgb(235, 235, 235);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+  color: rgb(100, 100, 100);
 }
 
 #meta-data-container div {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 #title-bar {
-    /* position: absolute;
+  /* position: absolute;
     bottom: 0;
     left: 0; */
-    width: 30%;
-    text-align: center;
-    margin: 0 auto;
-    height: 1px; /* You can adjust the height */
-    background-color: #fff; /* Adjust background color as needed */
-    height: 1px;
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+  height: 1px; /* You can adjust the height */
+  background-color: #fff; /* Adjust background color as needed */
+  height: 1px;
 }
 
-
 div:has(.jp-Cell-outputWrapper) {
-    padding: 1.4rem;
+  padding: 1.4rem;
 }
 
 .panel-container {
@@ -223,22 +218,22 @@ div:has(.jp-Cell-outputWrapper) {
 }
 
 @media (max-width: 600px) {
-    .panel-container {
-        flex-direction: column;
-        align-items: center;
-    }
+  .panel-container {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .panel {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   /* background: linear-gradient(to right bottom, rgb(55, 55, 55), rgb(84, 84, 84)); */
   /* background-color: rgba(87, 87, 87, 0.7); */
   /* color: white; */
   color: #333;
   padding: 0.5rem 1.2rem;
   border-radius: 4px;
-  border: 1px solid rgb(60,60,60);
+  border: 1px solid rgb(60, 60, 60);
   max-width: 230px;
   /* box-shadow: 2px 2px 8px 0px #999; */
   justify-content: center;
@@ -246,19 +241,35 @@ div:has(.jp-Cell-outputWrapper) {
 }
 
 .panel-green {
-    background: linear-gradient(to right bottom, rgb(55, 95, 55), rgb(84, 199, 84));
+  background: linear-gradient(
+    to right bottom,
+    rgb(55, 95, 55),
+    rgb(84, 199, 84)
+  );
 }
 
 .panel-blue {
-    background: linear-gradient(to right bottom, rgb(55, 55, 95), rgb(84, 84, 200));
+  background: linear-gradient(
+    to right bottom,
+    rgb(55, 55, 95),
+    rgb(84, 84, 200)
+  );
 }
 
 .panel-gray {
-    background: linear-gradient(to right bottom, rgb(55, 55, 55), rgb(84, 84, 84));
+  background: linear-gradient(
+    to right bottom,
+    rgb(55, 55, 55),
+    rgb(84, 84, 84)
+  );
 }
 
 .panel-red {
-    background: linear-gradient(to right bottom, rgb(95, 55, 55), rgb(200, 84, 84));
+  background: linear-gradient(
+    to right bottom,
+    rgb(95, 55, 55),
+    rgb(200, 84, 84)
+  );
 }
 /* .subpanel-green {
     border: 1px solid white;
@@ -278,7 +289,11 @@ div:has(.jp-Cell-outputWrapper) {
 } */
 
 .panel-brown {
-    background: linear-gradient(to right bottom, rgb(70, 57, 26), rgb(162, 134, 67));
+  background: linear-gradient(
+    to right bottom,
+    rgb(70, 57, 26),
+    rgb(162, 134, 67)
+  );
 }
 
 .panel-title {
@@ -292,32 +307,32 @@ div:has(.jp-Cell-outputWrapper) {
 }
 
 .panel-title > sup {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .panel-date {
-    /* color: #c0bebe; */
-    color: #555;
-    text-align: center;
+  /* color: #c0bebe; */
+  color: #555;
+  text-align: center;
 }
 .panel-subtitle,
 .panel-group-subtitle {
-    display: flex;
-    gap: 1rem;
-    justify-content: space-around;
-    width: 100%;
-    text-align: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+  width: 100%;
+  text-align: center;
 }
 .panel-group-subtitle {
-    border-bottom: 1px solid #999;
+  border-bottom: 1px solid #999;
 }
 .panel-subtitle div {
-    text-align: center;
+  text-align: center;
 }
 
 .panel-values {
-    display: flex;
-    gap: 1rem;
-    align-items: end;
+  display: flex;
+  gap: 1rem;
+  align-items: end;
 }
 
 .panel-value,
@@ -327,47 +342,38 @@ div:has(.jp-Cell-outputWrapper) {
 }
 
 .panel-value-green {
-    color: rgb(100, 240, 100)
+  color: rgb(100, 240, 100);
 }
 
 .panel-value-red {
-    color: rgb(240, 140, 140)
+  color: rgb(240, 140, 140);
 }
 
-
 .panel-group-container {
-    display: flex;
-    align-items: stretch;
-    justify-content: space-evenly;
-    gap: 1rem;
-
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  gap: 1rem;
 }
 
 .panel-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: end;
-    margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  margin: 0.5rem 0;
 }
 
-
-
-
-
-
 .jp-InputPrompt {
-    display: block !important;    
-    /* width: 100%;
+  display: block !important;
+  /* width: 100%;
     padding: 0; */
 }
 
-
 .panel-footer {
-    color: rgb(250,250,250);
-    text-align: center;
+  color: rgb(250, 250, 250);
+  text-align: center;
 }
-
 
 /* Hide the Python HTML() cells */
 /* .jp-CodeCell .jp-Cell-inputWrapper
@@ -375,50 +381,61 @@ div:has(.jp-Cell-outputWrapper) {
     display: none !important;
 } */
 
-div.jp-Cell-inputWrapper > div.jp-InputArea.jp-Cell-inputArea > div.jp-InputPrompt.jp-InputArea-prompt {
-    display: none !important;
+div.jp-Cell-inputWrapper
+  > div.jp-InputArea.jp-Cell-inputArea
+  > div.jp-InputPrompt.jp-InputArea-prompt {
+  display: none !important;
 }
 
 .jp-InputArea.jp-Cell-inputArea {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
- div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor div {
- /* div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div div { */
-    background: white !important;
-    padding: 12px;
+div
+  > div
+  > div.jp-InputArea.jp-Cell-inputArea
+  > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
+  div {
+  /* div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div div { */
+  background: white !important;
+  padding: 12px;
 }
-
 
 /* Add Scrollbar to cell inputs */
-div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div {
-    overflow: auto;
-    border: 1px dashed rgb(199, 199, 199);
-    border-radius: 8px;
+div
+  > div.jp-InputArea.jp-Cell-inputArea
+  > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
+  > div {
+  overflow: auto;
+  border: 1px dashed rgb(199, 199, 199);
+  border-radius: 8px;
+}
+
+
+.jp-InputArea-editor {
+    border: none !important;
 }
 
 div > div.jp-InputArea.jp-Cell-inputArea {
-    /* background: red; */
-    /* -webkit-border-radius: 20px; */
-    border-radius: 8px !important;
+  /* background: red; */
+  /* -webkit-border-radius: 20px; */
+  border-radius: 8px !important;
 }
 
-
 .jp-CodeCell > .jp-Cell-outputWrapper img {
-    /* border: 2px solid #999; */
-    border-radius: 5px;
-    /* box-shadow: 0px 0px 14px 0px #999; */
-    /* border: 1px solid rgb(60,60,60); */
+  /* border: 2px solid #999; */
+  border-radius: 5px;
+  /* box-shadow: 0px 0px 14px 0px #999; */
+  /* border: 1px solid rgb(60,60,60); */
 }
 
 @media (max-width: 600px) {
-    .jp-CodeCell > .jp-Cell-outputWrapper img {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .jp-CodeCell > .jp-Cell-outputWrapper img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
-
 
 /* div > div.jp-InputArea.jp-Cell-inputArea > div.jp-RenderedHTMLCommon.jp-RenderedMarkdown.jp-MarkdownOutput p img {
     border-radius: 5px;
@@ -427,23 +444,22 @@ div > div.jp-InputArea.jp-Cell-inputArea {
     /* max-width: 98%; */
 
 .jp-RenderedHTMLCommon {
-    padding-right: 5px;
+  padding-right: 5px;
 }
-
 
 /* .jp-Cell .jp-CodeCell, .jp-mod-noOutputs {
     display: none !important;
 }     */
-    
+
 /* .celltag_remove_cell, .jp-RenderedText {
         display: none !important;    
 } */
-.jp-OutputPrompt, .jp-OutputArea-prompt {
-    display: block !important;    
-    padding-left: 0 !important;
-    margin-left: 0 !important;
+.jp-OutputPrompt,
+.jp-OutputArea-prompt {
+  display: block !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
-            
 
 #cell-id\=7510e9c2
 /* jp-OutputPrompt.jp-OutputArea-prompt {
@@ -464,34 +480,34 @@ div > div.jp-InputArea.jp-Cell-inputArea {
 } */
 
 .note {
-    background: rgb(240,240,240);
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgb(180,180,180);
-    margin: 1rem 0;
-    position: relative;
-    max-width: 500px;
+  background: rgb(240, 240, 240);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgb(180, 180, 180);
+  margin: 1rem 0;
+  position: relative;
+  max-width: 500px;
 }
 
 .note-title {
-    position: absolute;
-    top: -1.27rem;
-    left: 0.4rem;
-    background: rgb(220, 220, 220);
-    border: 1px solid rgb(180,180,180);
-    border-radius: 6px 6px 0 0;
-    padding: 0.1rem 0.8rem;
-    font-weight: bold;
-    font-size: 0.6rem;
-    color: rgb(64, 64, 64);
-    z-index: 10;
+  position: absolute;
+  top: -1.27rem;
+  left: 0.4rem;
+  background: rgb(220, 220, 220);
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 6px 6px 0 0;
+  padding: 0.1rem 0.8rem;
+  font-weight: bold;
+  font-size: 0.6rem;
+  color: rgb(64, 64, 64);
+  z-index: 10;
 }
 
 .note-body {
-    font-size: 0.75rem;
-    color: rgb(70, 70, 70);
-    line-height: 1.4em;
-    z-index: 1;
+  font-size: 0.75rem;
+  color: rgb(70, 70, 70);
+  line-height: 1.4em;
+  z-index: 1;
 }
 
 /* .jp-Notebook.jp-Cell:not(.jp-mod-active).jp-OutputPrompt {
@@ -504,29 +520,28 @@ div > div.jp-InputArea.jp-Cell-inputArea {
     display: none;
 } */
 
-
 .table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border: 1px solid gray;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid gray;
 }
 
 /* Let the table grow naturally */
 .table-wrapper table {
-    width: max-content;   /* key fix */
-    min-width: 100%;      /* ensures it fills when small */
-    table-layout: auto;
+  width: max-content; /* key fix */
+  min-width: 100%; /* ensures it fills when small */
+  table-layout: auto;
 }
 
 .jp-OutputArea {
-    overflow-x: visible !important;
+  overflow-x: visible !important;
 }
 
 /* div.jp-Cell-outputWrapper > div.jp-OutputArea */
 .jp-Cell-outputArea {
-    padding: 10px important!;
+  padding: 10px important!;
 }
 
 div:has(.note) {
-    padding: 4px 0;
+  padding: 4px 0;
 }
