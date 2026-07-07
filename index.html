@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>main</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>index</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7795,14 +7795,131 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main>
+<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c3e76ac4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s2">"""</span>
+
+<span class="s2">&lt;div id="cover-page-container"&gt;</span>
+<span class="s2">    &lt;img id="cover-page-image" src="images/blue-bg.jpg" alt="Description of the image" /&gt;</span>
+<span class="s2">    &lt;div id="title-container"&gt;</span>
+<span class="s2">        &lt;h1&gt;Ancient Heights Apartments&lt;/h1&gt;</span>
+<span class="s2">        &lt;div id="meta-data-container"&gt;</span>
+<span class="s2">            &lt;div&gt;July 6, 2026&lt;/div&gt;</span>
+<span class="s2">            &lt;div&gt;by Aaron Hardy&lt;/div&gt;</span>
+<span class="s2">        &lt;/div&gt;</span>
+<span class="s2">    &lt;/div&gt;</span>
+<span class="s2">    &lt;div id="title-bar"&gt;&lt;/div&gt;</span>
+<span class="s2">&lt;/div&gt;</span>
+<span class="s2">"""</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<div id="cover-page-container">
+<img alt="Description of the image" id="cover-page-image" src="images/blue-bg.jpg"/>
+<div id="title-container">
+<h1>Ancient Heights Apartments</h1>
+<div id="meta-data-container">
+<div>July 6, 2026</div>
+<div>by Aaron Hardy</div>
+</div>
+</div>
+<div id="title-bar"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0f5839a5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="n">HTML</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    &lt;link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"&gt;</span>
+
+<span class="sd">    &lt;link rel="stylesheet" href="custom.css"&gt;</span>
+<span class="sd">    &lt;script src="custom.js" defer&gt;&lt;/script&gt;</span>
+<span class="sd">    &lt;style&gt;</span>
+<span class="sd">        div.jp-OutputPrompt.jp-OutputArea-prompt {</span>
+<span class="sd">            display: none !important;</span>
+<span class="sd">        }</span>
+<span class="sd">    </span>
+<span class="sd">        .jp-OutputPrompt {</span>
+<span class="sd">            display: none !important;</span>
+<span class="sd">        }</span>
+
+<span class="sd">        .jp-Notebook-cell.celltag_remove_cell {</span>
+<span class="sd">            display: none !important;</span>
+<span class="sd">        }</span>
+<span class="sd">    &lt;/style&gt;</span>
+
+<span class="sd">    """</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="custom.css" rel="stylesheet"/>
+<script defer="" src="custom.js"></script>
+<style>
+        div.jp-OutputPrompt.jp-OutputArea-prompt {
+            display: none !important;
+        }
+
+        .jp-OutputPrompt {
+            display: none !important;
+        }
+
+        .jp-Notebook-cell.celltag_remove_cell {
+            display: none !important;
+        }
+    </style>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fcf18fb9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Project-Setup">Project Setup<a class="anchor-link" href="#Project-Setup">¶</a></h1><p>This project involves an end-to-end process of gathering historical stock fundamentals data and generating a stock trading strategy from it using SQL and python. The raw data was sourced from  SimFin.com.</p>
+<h1 id="Project-Setup">Project Setup<a class="anchor-link" href="#Project-Setup">¶</a></h1><p>This project involves an end-to-end process of gathering historical stock fundamentals data and generating a stock trading strategy from it using SQL and python. The raw data was sourced from SimFin.com. MySQL was used as the database management system.</p>
 </div>
 </div>
 </div>
@@ -7814,10 +7931,166 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span> 
- <span class="n">use</span> <span class="n">fundamentals_data</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">USE</span> <span class="n">fundamentals_data</span><span class="p">;</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ccadcb36">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">industries</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=95b3f398">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">us_balance_quarterly</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5f047678">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The list of U.S. companies Excel file was inspected in Excel and the file contained rows of data split over several cells in an unpredictable way. In Excel, the CONCAT() function was used to convert all rows to a single concatenated string which was then split again using Data &gt; Text to Columns tool.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=61ce59fc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Next, we uploaded each SimFin CSV file into a separate SQL database table. The example below shows how the table <code>us_companies</code> was uploaded to the MySQL database titled 'fundamentals_data'. All SimFin data files were uploaded similarly.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f2643789">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">us_companies</span><span class="p">;</span>
+
+<span class="o">--</span> <span class="n">Create</span> <span class="n">the</span> <span class="n">table</span> <span class="n">structure</span>
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">us_companies</span> <span class="p">(</span>
+    <span class="n">Ticker</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="n">SimFinId</span> <span class="n">INT</span><span class="p">,</span>
+    <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="n">IndustryId</span> <span class="n">INT</span><span class="p">,</span>
+    <span class="n">ISIN</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="err">`</span><span class="n">End</span> <span class="n">of</span> <span class="n">financial</span> <span class="n">year</span> <span class="p">(</span><span class="n">month</span><span class="p">)</span><span class="err">`</span> <span class="n">INT</span><span class="p">,</span>
+    <span class="err">`</span><span class="n">Number</span> <span class="n">Employees</span><span class="err">`</span> <span class="n">INT</span><span class="p">,</span>
+    <span class="err">`</span><span class="n">Business</span> <span class="n">Summary</span><span class="err">`</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="n">Market</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+    <span class="n">CIK</span> <span class="n">INT</span><span class="p">,</span>
+    <span class="err">`</span><span class="n">Main</span> <span class="n">Currency</span><span class="err">`</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="o">--</span> <span class="n">Upload</span> <span class="n">the</span> <span class="n">csv</span> <span class="n">data</span>
+<span class="n">LOAD</span> <span class="n">DATA</span> <span class="n">LOCAL</span> <span class="n">INFILE</span> <span class="s1">'c:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">aaron</span><span class="se">\\</span><span class="s1">Desktop</span><span class="se">\\</span><span class="s1">Local Projects</span><span class="se">\\</span><span class="s1">Portfolio Projects</span><span class="se">\\</span><span class="s1">data</span><span class="se">\\</span><span class="s1">us-companies</span><span class="se">\\</span><span class="s1">us-companies.csv'</span>
+<span class="n">INTO</span> <span class="n">TABLE</span> <span class="n">us_companies</span>
+<span class="n">FIELDS</span> <span class="n">TERMINATED</span> <span class="n">BY</span> <span class="s1">','</span>
+<span class="n">OPTIONALLY</span> <span class="n">ENCLOSED</span> <span class="n">BY</span> <span class="s1">'"'</span>
+<span class="n">LINES</span> <span class="n">TERMINATED</span> <span class="n">BY</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+<span class="n">IGNORE</span> <span class="mi">1</span> <span class="n">LINES</span><span class="p">;</span> <span class="o">--</span> <span class="n">skip</span> <span class="n">header</span> <span class="n">row</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a0a343e6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The company profile table (<code>us_companies</code>) had 37 rows where both the Ticker and Company name were NULL</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b5405533">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">us_companies</span><span class="p">;</span>
+
+<span class="n">UPDATE</span> <span class="n">us_companies</span>
+<span class="n">SET</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="err">`</span><span class="n">Ticker</span><span class="err">`</span> <span class="o">=</span> <span class="n">NULL</span>
+<span class="n">WHERE</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="o">=</span> <span class="s1">''</span> <span class="n">AND</span> <span class="err">`</span><span class="n">Ticker</span><span class="err">`</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+
+<span class="n">SELECT</span> <span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> 
+<span class="n">FROM</span> <span class="n">us_companies</span>
+<span class="n">WHERE</span> <span class="p">(</span><span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">AND</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=32b57f2c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Next, we will delete from the table any rows that have a null value for Ticker and Company Name and therefore insufficient identifying information.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e9663bd4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DELETE</span> <span class="n">FROM</span> <span class="n">us_companies</span> 
+<span class="n">WHERE</span> <span class="p">(</span><span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">AND</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0bf4adf7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The data includes several financial statement tables. The dates for a balance sheet table (<code>us_balance_quarterly</code>) were observed below.</p>
 </div>
 </div>
 </div>
@@ -7829,12 +8102,35 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="n">SELECT</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> 
     <span class="n">MIN</span><span class="p">(</span><span class="err">`</span><span class="n">Report</span> <span class="n">Date</span><span class="err">`</span><span class="p">)</span> <span class="k">as</span> <span class="n">min_date</span><span class="p">,</span>
-    <span class="n">MAX</span><span class="p">(</span><span class="err">`</span><span class="n">Report</span> <span class="n">Date</span><span class="err">`</span><span class="p">)</span> <span class="k">as</span> <span class="n">max_date</span>
+    <span class="n">MAX</span><span class="p">(</span><span class="err">`</span><span class="n">Report</span> <span class="n">Date</span><span class="err">`</span><span class="p">)</span> <span class="k">as</span> <span class="n">max_date</span><span class="p">,</span>
+    <span class="n">TIMESTAMPDIFF</span><span class="p">(</span><span class="n">DAY</span><span class="p">,</span> <span class="n">MIN</span><span class="p">(</span><span class="err">`</span><span class="n">Report</span> <span class="n">Date</span><span class="err">`</span><span class="p">),</span> <span class="n">MAX</span><span class="p">(</span><span class="err">`</span><span class="n">Report</span> <span class="n">Date</span><span class="err">`</span><span class="p">))</span> <span class="o">/</span> <span class="mf">365.25</span> <span class="n">AS</span> <span class="n">years</span>
 <span class="n">FROM</span> <span class="n">us_balance_quarterly</span><span class="p">;</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5e3ba2c1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The data spans a period starting <em>July 31, 2020</em> and ending <em>May 31, 2025</em>, covering about 4.8 years.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5740c979">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Next, we look at the stock price table (<code>us_shareprices_monthly</code>) and</p>
 </div>
 </div>
 </div>
@@ -7846,29 +8142,97 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="o">--</span> <span class="n">Clean</span> <span class="n">daily</span> <span class="n">prices</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">--</span> <span class="n">Clean</span> <span class="n">daily</span> <span class="n">prices</span>
 <span class="n">SELECT</span> 
     <span class="n">MIN</span><span class="p">(</span><span class="n">Close</span><span class="p">),</span>
     <span class="n">MAX</span><span class="p">(</span><span class="n">Close</span><span class="p">),</span>
     <span class="n">MIN</span><span class="p">(</span><span class="err">`</span><span class="n">Adj</span><span class="o">.</span> <span class="n">Close</span><span class="err">`</span><span class="p">),</span>
     <span class="n">MAX</span><span class="p">(</span><span class="err">`</span><span class="n">Adj</span><span class="o">.</span> <span class="n">Close</span><span class="err">`</span><span class="p">)</span>
 <span class="n">FROM</span> <span class="n">us_shareprices_daily</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9efa8601">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The <code>Close</code> price ranged from $0 to $99,999,999.99.
+The <code>Adj. Close</code> price ranged from $0 to $9,984,240.00.</p>
+<p>We filtered removed outliers and high-priced stocks to make the analysis accessible to the mainstream investor with budgets of $100,000 or less. All tickers whose `Close` price exceeded $100,000 on any day over the data period were filtered out.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4b7a5441">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">us_shareprices_daily_filtered</span>
 
-<span class="o">--</span> <span class="n">WHERE</span> <span class="n">rn</span> <span class="o">=</span> <span class="p">(</span>
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">us_shareprices_daily_filtered</span> <span class="n">AS</span> 
+<span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">us_shareprices_daily</span>
+<span class="n">WHERE</span> <span class="n">Ticker</span> <span class="n">NOT</span> <span class="n">IN</span> <span class="p">(</span>
+    <span class="n">SELECT</span> <span class="n">DISTINCT</span> <span class="n">Ticker</span> 
+    <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> 
+    <span class="n">WHERE</span> <span class="err">`</span><span class="n">Close</span><span class="err">`</span> <span class="o">&gt;</span> <span class="mi">100000</span>
+<span class="p">)</span>
+
+<span class="o">--</span> <span class="n">Check</span> <span class="n">that</span> <span class="n">no</span> <span class="n">prices</span> <span class="n">exceed</span> <span class="err">$</span><span class="mi">100</span><span class="p">,</span><span class="mi">000</span>
+<span class="n">SELECT</span> <span class="o">*</span> 
+<span class="n">FROM</span> <span class="n">us_shareprices_daily_filtered</span>
+<span class="n">WHERE</span> <span class="err">`</span><span class="n">Close</span><span class="err">`</span> <span class="o">&gt;</span> <span class="mi">100000</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a2a50107">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=fb092a5b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2c48e7be">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">--</span> <span class="n">WHERE</span> <span class="n">rn</span> <span class="o">=</span> <span class="p">(</span>
 <span class="o">--</span>     <span class="n">SELECT</span> 
 <span class="o">--</span>         <span class="n">Ticker</span><span class="p">,</span>
 <span class="o">--</span>         <span class="n">ROW_NUMBER</span><span class="p">()</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="n">BY</span> <span class="n">Ticker</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Date</span> <span class="n">ASC</span><span class="p">)</span> <span class="n">AS</span> <span class="n">rn</span> 
 <span class="o">--</span> <span class="p">)</span>
 <span class="o">--</span> <span class="n">where</span> <span class="err">`</span><span class="n">Adj</span><span class="o">.</span> <span class="n">Close</span><span class="err">`</span> <span class="o">&gt;</span> <span class="mf">1E6</span><span class="p">;</span>
 
-
-
-<span class="n">UPDATE</span> <span class="n">us_shareprices_daily</span>
-<span class="n">SET</span> <span class="err">`</span><span class="n">Adj</span><span class="o">.</span> <span class="n">Close</span><span class="err">`</span> <span class="o">=</span> <span class="n">NULL</span>
-<span class="n">WHERE</span> <span class="err">`</span><span class="n">Adj</span><span class="o">.</span> <span class="n">Close</span><span class="err">`</span> <span class="o">&gt;=</span> <span class="mf">9999999.99</span><span class="p">;</span>
-
-
-<span class="n">ROLLBACK</span>
 
 <span class="o">--</span> <span class="o">--------------</span>
 <span class="o">--</span> <span class="n">MONTHLY</span> <span class="n">PRICES</span>
