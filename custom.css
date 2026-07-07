@@ -51,7 +51,7 @@ div.text_cell_render,
 main {
   /* width: 80%; */
   padding: 2rem 2rem 0;
-  margin: 20rem 8rem 8rem;
+  margin: 10rem 8rem 8rem;
   background: white;
   border: 1px solid rgb(210, 210, 210);
   /* position: relative;
@@ -61,7 +61,7 @@ main {
 
 @media (max-width: 600px) {
   main {
-    margin: 12rem 0;
+    margin: 10rem 0;
     padding: 0 4px;
     border: none;
   }
@@ -177,7 +177,7 @@ img {
   /* width: fit-content; */
   background: white;
   border-radius: 6px;
-  margin: 6rem auto 2rem;
+  margin: 2rem auto 2rem;
 }
 
 #meta-data-container {
