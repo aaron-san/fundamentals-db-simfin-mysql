@@ -1,5 +1,31 @@
- use fundamentals_data;
  
+ use fundamentals_data
+
+
+-- Clean daily prices
+SELECT 
+    MIN(Close),
+    MAX(Close),
+    MIN(`Adj. Close`),
+    MAX(`Adj. Close`)
+FROM us_shareprices_daily;
+
+-- WHERE rn = (
+--     SELECT 
+--         Ticker,
+--         ROW_NUMBER() OVER (PARTITION BY Ticker ORDER BY Date ASC) AS rn 
+-- )
+-- where `Adj. Close` > 1E6;
+
+
+
+UPDATE us_shareprices_daily
+SET `Adj. Close` = NULL
+WHERE `Adj. Close` >= 9999999.99;
+
+
+ROLLBACK
+
 -- --------------
 -- MONTHLY PRICES
 -- --------------
