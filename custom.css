@@ -383,7 +383,8 @@ div.jp-Cell-inputWrapper > div.jp-InputArea.jp-Cell-inputArea > div.jp-InputProm
     margin-top: 8px;
 }
 
- div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div > div {
+ div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor div {
+ /* div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div div { */
     background: white !important;
     padding: 12px;
 }
