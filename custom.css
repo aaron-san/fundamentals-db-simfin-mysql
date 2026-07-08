@@ -15,6 +15,16 @@ body,
   font-family: "Roboto", sans-serif;
 }
 
+html {
+  padding: 0;
+  margin: 0;
+}
+.jp-Notebook {
+  padding: 0;
+  margin: 0;
+}
+
+
 /* Optional: remove padding around output wrapper */
 /* .jp-MarkdownOutput {
   background: transparent !important;
@@ -34,7 +44,7 @@ div.text_cell_render,
 .output-html,
 .output-markdown {
   /* background: rgba(0, 0, 0, 0.1) !/important; */
-  background: white;
+  /* background: white; */
   color: black !important;
   /* padding: 12px !important; */
   border-radius: 0 !important;
@@ -51,9 +61,9 @@ div.text_cell_render,
 main {
   /* width: 80%; */
   padding: 2rem 2rem 0;
-  margin: 10rem 8rem 8rem;
+  margin: 0 6rem 6rem;
   background: white;
-  border: 1px solid rgb(210, 210, 210);
+  /* border: 1px solid rgb(210, 210, 210); */
   /* position: relative;
     z-index: 10; */
   /* background: url("images/Painted White.jpg"); */
@@ -66,6 +76,9 @@ main {
     border: none;
   }
 }
+
+
+
 
 /* --- Toggle button --- */
 .toggle-btn {
@@ -101,33 +114,26 @@ body {
   margin: 0; /* remove default body margin */
 }
 
+
 img {
   width: 600px;
 }
 
-/* #cover-page-container {
-    position: relative;
-    width: 100%;
-} */
-
-/* #cover-page-image-container {
-  position: absolute;
-  top: 0px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-} */
-
-/* #cover-page-image {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;  
-} */
+#cover-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    /* padding: 20px 0; */
+}
+#title-container h1 {
+    font-size: 2.4rem;
+    margin-bottom: 0.4rem;
+}
+#meta-data-container {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #9ca3af;
+}
 
 /* object-fit: cover; */
 /* opacity: 0.6; */
@@ -147,14 +153,14 @@ img {
     width: 100%;
 } */
 
-#cover-page-container {
-  position: absolute; /* Allows positioning of the image and text within the container */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 50px;
-  z-index: 1;
-}
+/* #cover-page-container { */
+  /* position: absolute; Allows positioning of the image and text within the container */
+  /* left: 0; */
+  /* top: 0; */
+  /* width: 100%; */
+  /* height: 50px; */
+  /* z-index: 1; */
+/* } */
 
 #cover-page-image {
   position: absolute;
@@ -177,7 +183,7 @@ img {
   /* width: fit-content; */
   background: white;
   border-radius: 6px;
-  margin: 2rem auto 2rem;
+  /* margin: 2rem auto 2rem; */
 }
 
 #meta-data-container {
@@ -381,11 +387,11 @@ div:has(.jp-Cell-outputWrapper) {
     display: none !important;
 } */
 
-div.jp-Cell-inputWrapper
+/* div.jp-Cell-inputWrapper
   > div.jp-InputArea.jp-Cell-inputArea
   > div.jp-InputPrompt.jp-InputArea-prompt {
   display: none !important;
-}
+} */
 
 .jp-InputArea.jp-Cell-inputArea {
   margin-top: 8px;

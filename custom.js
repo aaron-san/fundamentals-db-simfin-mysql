@@ -17,12 +17,14 @@ window.onload = function () {
 
   // Select the main element
   const mainElement = document.querySelector("main");
-
+  const body = document.querySelector("body");
   // Select the cover-page-container
   const coverPageContainer = document.querySelector("#cover-page-container");
+  const header = document.querySelector("header");
 
   // Prepend the cover page container to the main element
-  if (mainElement && coverPageContainer) {
+  if (body && mainElement && coverPageContainer) {
+    body.prepend(header);
     mainElement.prepend(coverPageContainer);
   }
 };
