@@ -467,9 +467,9 @@ div > div.jp-InputArea.jp-Cell-inputArea {
   margin-left: 0 !important;
 }
 
-/* jp-OutputPrompt.jp-OutputArea-prompt {
+jp-OutputPrompt.jp-OutputArea-prompt {
     display: none;
-} */
+}
 
             /*
 
@@ -524,6 +524,11 @@ div > div.jp-InputArea.jp-Cell-inputArea {
 /* div.jp-Cell-outputWrapper > div.jp-OutputArea.jp-Cell-outputArea > div > div.jp-OutputPrompt.jp-OutputArea-prompt {
     display: none;
 } */
+
+div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-InputPrompt.jp-InputArea-prompt {
+  display: none !important;
+}
+
 
 .table-wrapper {
   overflow-x: auto;
