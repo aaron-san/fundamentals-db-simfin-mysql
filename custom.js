@@ -67,14 +67,12 @@ function addSmoothToggleButtons() {
     .querySelectorAll(".jp-InputPrompt, .jp-OutputPrompt")
     .forEach((el) => (el.style.display = "none"));
 
-  document.querySelectorAll(".jp-CodeCell pre").forEach((pre) => {
-    if (pre.textContent.includes("IPython.display")) {
-      const cell = pre.closest(".jp-CodeCell");
-      if (cell) {
-        cell.style.display = "none";
-      }
-    }
-  });
+  document.querySelectorAll(".jp-CodeCell pre").forEach(pre => {
+  const tags_for_exclusion = ["<link", "<div", "<style"];
+  if (tags_for_exclusion.some(tag => pre.textContent.includes(tag))) {
+    pre.closest(".jp-CodeCell").style.display = "none";
+  }
+});
 }
 
 document.addEventListener("DOMContentLoaded", addSmoothToggleButtons);

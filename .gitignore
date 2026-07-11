@@ -1,0 +1,5 @@
+# Ignore credential files
+mysql_creds.json
+*.env
+.env
+secrets/
