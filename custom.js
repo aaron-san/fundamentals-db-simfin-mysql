@@ -48,14 +48,14 @@ function addSmoothToggleButtons() {
     wrapper.appendChild(codeInput);
 
     const btn = document.createElement("button");
-    btn.textContent = "Show Code";
+    btn.textContent = "Show SQL";
     btn.className = "toggle-btn";
 
     btn.onclick = () => {
       wrapper.classList.toggle("show");
       btn.textContent = wrapper.classList.contains("show")
-        ? "Hide Code"
-        : "Show Code";
+        ? "Hide SQL"
+        : "Show SQL";
     };
 
     cell.insertBefore(btn, wrapper);

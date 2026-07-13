@@ -335,9 +335,12 @@ div
   > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
   div {
   background: rgb(247, 247, 246) !important;
-  padding: 12px;
+  padding: 8px;
 }
 
+.jp-InputArea.jp-Cell-inputArea {
+  width: fit-content;
+}
 /* Add scrollbar to cell inputs */
 div
   > div.jp-InputArea.jp-Cell-inputArea
@@ -346,15 +349,16 @@ div
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px dashed rgb(199, 199, 199);
-  border-radius: 8px;
+  border-radius: 2px;
 }
 
 .jp-InputArea-editor {
   border: none !important;
+  width: fit-content;
 }
 
 div > div.jp-InputArea.jp-Cell-inputArea {
-  border-radius: 8px !important;
+  border-radius: 2px !important;
 }
 
 div
@@ -368,6 +372,10 @@ div
 .jp-CodeCell > .jp-Cell-outputWrapper img {
   border-radius: 5px;
 }
+
+.jp-Cell.jp-CodeCell {
+    margin: 0 4px !important;
+  }
 
 @media (max-width: 600px) {
   .jp-CodeCell > .jp-Cell-outputWrapper img {
@@ -443,10 +451,14 @@ div:has(.note) {
   max-width: none !important;
 }
 
-.jp-Cell-outputArea {
+/* .jp-Cell-outputArea {
   padding: 10px !important;
-}
+} */
 
+.jp-Cell.jp-CodeCell {
+/* .cm-editor { */
+  width: fit-content !important;
+}
 .table-wrapper {
   overflow-x: auto !important;
   display: block;

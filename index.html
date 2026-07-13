@@ -8095,7 +8095,18 @@ window.addEventListener('load', () => {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="The-Data">The Data<a class="anchor-link" href="#The-Data">¶</a></h1><p>The raw data was acquired from <a href="https://www.simfin.com/en/fundamental-data-download/">SimFin.com</a>, which requires a free account to download. MySQL was used as the database management system. The raw data existed as CSVs. Each CSV was loaded into a MySQL table. The code used to load each table can be seen <a href="load_data.html">here</a></p>
+<h1 id="The-Data">The Data<a class="anchor-link" href="#The-Data">¶</a></h1><p>The raw data was acquired from <a href="https://www.simfin.com/en/fundamental-data-download/">SimFin.com</a>, which requires a free account to download. MySQL was used as the database management system. The raw data existed as CSVs. Each CSV was loaded into a MySQL table. The code used to load each table can be seen <a href="load_data.html">here</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3203add1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The raw data included common industry and sector classifications. The <code>IndustryId</code> field maps to the same field in the <code>us_companies</code> table.</p>
 </div>
 </div>
 </div>
@@ -8107,9 +8118,14 @@ window.addEventListener('load', () => {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> 
-<span class="n">FROM</span> <span class="n">industries</span> 
-<span class="n">ORDER</span> <span class="n">BY</span> <span class="n">IndustryId</span> <span class="n">ASC</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">WITH</span> <span class="n">cte</span> <span class="n">AS</span> <span class="p">(</span>
+<span class="n">SELECT</span> <span class="o">*</span><span class="p">,</span>
+<span class="n">ROW_NUMBER</span><span class="p">()</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="n">BY</span> <span class="n">Sector</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">IndustryId</span><span class="p">)</span> <span class="n">AS</span> <span class="n">rn</span>
+<span class="n">FROM</span> <span class="n">industries</span>
+<span class="p">)</span>
+<span class="n">SELECT</span> <span class="n">Sector</span><span class="p">,</span> <span class="n">Industry</span><span class="p">,</span> <span class="n">IndustryId</span>
+<span class="n">FROM</span> <span class="n">cte</span>
+<span class="n">WHERE</span> <span class="n">rn</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -8121,7 +8137,7 @@ window.addEventListener('load', () => {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -8142,9 +8158,14 @@ window.addEventListener('load', () => {
 <span class="p">)</span>
 
 <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
-<span class="s2">SELECT *</span>
-<span class="s2">FROM industries </span>
-<span class="s2">ORDER BY IndustryId ASC </span>
+<span class="s2">WITH cte AS (</span>
+<span class="s2">SELECT *,</span>
+<span class="s2">ROW_NUMBER() OVER (PARTITION BY Sector ORDER BY IndustryId) AS rn</span>
+<span class="s2">FROM industries</span>
+<span class="s2">)</span>
+<span class="s2">SELECT Sector, Industry, IndustryId</span>
+<span class="s2">FROM cte</span>
+<span class="s2">WHERE rn in (1, 2, 3)</span>
 <span class="s2">LIMIT 10;</span>
 <span class="s2">"""</span>
 
@@ -8163,66 +8184,66 @@ window.addEventListener('load', () => {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <table border="1" class="dataframe">
 <thead>
 <tr style="text-align: right;">
-<th>IndustryId</th>
-<th>Industry</th>
 <th>Sector</th>
+<th>Industry</th>
+<th>IndustryId</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>100001</td>
-<td>Industrial Products</td>
-<td>Industrials</td>
+<td>Basic Materials</td>
+<td>Chemicals</td>
+<td>110001</td>
 </tr>
 <tr>
-<td>100002</td>
+<td>Basic Materials</td>
+<td>Forest Products</td>
+<td>110002</td>
+</tr>
+<tr>
+<td>Basic Materials</td>
+<td>Agriculture</td>
+<td>110003</td>
+</tr>
+<tr>
 <td>Business Services</td>
-<td>Industrials</td>
+<td>Communication Services</td>
+<td>108001</td>
 </tr>
 <tr>
-<td>100003</td>
-<td>Engineering &amp; Construction</td>
-<td>Industrials</td>
+<td>Business Services</td>
+<td>Consulting</td>
+<td>108002</td>
 </tr>
 <tr>
-<td>100004</td>
-<td>Waste Management</td>
-<td>Industrials</td>
+<td>Business Services</td>
+<td>HR &amp; Staffing</td>
+<td>108003</td>
 </tr>
 <tr>
-<td>100005</td>
-<td>Industrial Distribution</td>
-<td>Industrials</td>
+<td>Consumer Cyclical</td>
+<td>Entertainment</td>
+<td>103001</td>
 </tr>
 <tr>
-<td>100006</td>
-<td>Airlines</td>
-<td>Industrials</td>
+<td>Consumer Cyclical</td>
+<td>Retail - Apparel &amp; Specialty</td>
+<td>103002</td>
 </tr>
 <tr>
-<td>100007</td>
-<td>Consulting &amp; Outsourcing</td>
-<td>Industrials</td>
+<td>Consumer Cyclical</td>
+<td>Restaurants</td>
+<td>103003</td>
 </tr>
 <tr>
-<td>100008</td>
-<td>Aerospace &amp; Defense</td>
-<td>Industrials</td>
-</tr>
-<tr>
-<td>100009</td>
-<td>Farm &amp; Construction Machinery</td>
-<td>Industrials</td>
-</tr>
-<tr>
-<td>100010</td>
-<td>Transportation &amp; Logistics</td>
-<td>Industrials</td>
+<td>Consumer Defensive</td>
+<td>Retail - Defensive</td>
+<td>102001</td>
 </tr>
 </tbody>
 </table>
@@ -8673,7 +8694,7 @@ window.addEventListener('load', () => {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next, each SimFin CSV file was uploaded into a separate SQL database table. The example below shows how the table <code>us_companies</code> was uploaded to the MySQL database titled 'fundamentals_data'. All SimFin data files were uploaded similarly.</p>
+<p>Next, each SimFin CSV file was uploaded into a separate SQL database table. The SQL example below (press <code>Show SQL</code> to see) shows how the table <code>us_companies</code> was uploaded to the MySQL database titled 'fundamentals_data'. All SimFin data files were uploaded similarly.</p>
 </div>
 </div>
 </div>
@@ -8721,7 +8742,7 @@ window.addEventListener('load', () => {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The company profile table (<code>us_companies</code>) had 37 rows where both the Ticker and Company name were NULL.</p>
+<p>The company profile table (<code>us_companies</code>) had 37 rows where both the Ticker and Company name were blank (''). Those entire rows were deleted because they did not contain sufficient identifying information.</p>
 </div>
 </div>
 </div>
@@ -8735,30 +8756,182 @@ window.addEventListener('load', () => {
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">us_companies</span><span class="p">;</span>
 
-<span class="n">UPDATE</span> <span class="n">us_companies</span>
-<span class="n">SET</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="err">`</span><span class="n">Ticker</span><span class="err">`</span> <span class="o">=</span> <span class="n">NULL</span>
-<span class="n">WHERE</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="o">=</span> <span class="s1">''</span> <span class="n">AND</span> <span class="err">`</span><span class="n">Ticker</span><span class="err">`</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-
-<span class="n">SELECT</span> <span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> 
+<span class="n">SELECT</span> <span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
 <span class="n">FROM</span> <span class="n">us_companies</span>
-<span class="n">WHERE</span> <span class="p">(</span><span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">AND</span> <span class="err">`</span><span class="n">Company</span> <span class="n">Name</span><span class="err">`</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="n">WHERE</span> <span class="p">(</span>
+        <span class="n">Ticker</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">)</span>
+    <span class="n">AND</span> <span class="p">(</span>
+        <span class="n">CompanyName</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">CompanyName</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">)</span>
+    <span class="n">AND</span> <span class="p">(</span>
+        <span class="n">CIK</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">CIK</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">);</span>
+
+<span class="n">SELECT</span> <span class="s2">""</span> <span class="n">AS</span> <span class="s2">"Missing Values"</span>
+<span class="n">UNION</span>
+<span class="n">SELECT</span> <span class="n">CONCAT</span><span class="p">(</span><span class="n">FORMAT</span><span class="p">(</span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span> <span class="s2">"$#,##0"</span><span class="p">),</span> <span class="s2">" Missing CIKs"</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">us_companies</span>
+<span class="n">WHERE</span>
+    <span class="n">CIK</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="n">OR</span> <span class="n">CIK</span> <span class="n">IS</span> <span class="n">NULL</span>
+<span class="n">UNION</span>
+<span class="n">SELECT</span> <span class="n">CONCAT</span><span class="p">(</span><span class="s2">"    "</span><span class="p">,</span> <span class="n">FORMAT</span><span class="p">(</span><span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span> <span class="s2">"$#,##0"</span><span class="p">),</span> <span class="s2">" Missing Tickers"</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">us_companies</span>
+<span class="n">WHERE</span>
+    <span class="n">Ticker</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="n">OR</span> <span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span>
+<span class="n">UNION</span>
+<span class="n">SELECT</span> <span class="n">CONCAT</span><span class="p">(</span>
+        <span class="s2">"    "</span><span class="p">,</span> <span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span> <span class="s2">" Missing Company Names"</span>
+    <span class="p">)</span>
+<span class="n">FROM</span> <span class="n">us_companies</span>
+<span class="n">WHERE</span>
+    <span class="n">CompanyName</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="n">OR</span> <span class="n">CompanyName</span> <span class="n">IS</span> <span class="n">NULL</span>
+<span class="n">UNION</span>
+<span class="n">SELECT</span> <span class="n">CONCAT</span><span class="p">(</span><span class="s2">"    "</span><span class="p">,</span> <span class="n">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span> <span class="s2">" Mssing All"</span><span class="p">)</span>
+<span class="n">FROM</span> <span class="n">us_companies</span>
+<span class="n">WHERE</span> <span class="p">(</span>
+        <span class="n">CompanyName</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">CompanyName</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">)</span>
+    <span class="n">AND</span> <span class="p">(</span>
+        <span class="n">Ticker</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">)</span>
+    <span class="n">AND</span> <span class="p">(</span>
+        <span class="n">CIK</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">OR</span> <span class="n">CIK</span> <span class="n">IS</span> <span class="n">NULL</span>
+    <span class="p">);</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=06ca92f1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=32b57f2c">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mysql.connector</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"mysql_creds.json"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="n">creds</span><span class="p">[</span><span class="s2">"host"</span><span class="p">],</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">creds</span><span class="p">[</span><span class="s2">"user"</span><span class="p">],</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">creds</span><span class="p">[</span><span class="s2">"password"</span><span class="p">],</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">creds</span><span class="p">[</span><span class="s2">"database"</span><span class="p">],</span>
+    <span class="n">auth_plugin</span><span class="o">=</span><span class="s2">"mysql_native_password"</span>
+<span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">SELECT "" AS "Missing Values"</span>
+<span class="s2">UNION</span>
+<span class="s2">SELECT CONCAT(COUNT(*), " Missing CIKs")</span>
+<span class="s2">FROM us_companies</span>
+<span class="s2">WHERE</span>
+<span class="s2">    CIK = ''</span>
+<span class="s2">    OR CIK IS NULL</span>
+<span class="s2">UNION</span>
+<span class="s2">SELECT CONCAT("    ", COUNT(*), " Missing Tickers")</span>
+<span class="s2">FROM us_companies</span>
+<span class="s2">WHERE</span>
+<span class="s2">    Ticker = ''</span>
+<span class="s2">    OR Ticker IS NULL</span>
+<span class="s2">UNION</span>
+<span class="s2">SELECT CONCAT(</span>
+<span class="s2">        "    ", COUNT(*), " Missing Company Names"</span>
+<span class="s2">    )</span>
+<span class="s2">FROM us_companies</span>
+<span class="s2">WHERE</span>
+<span class="s2">    CompanyName = ''</span>
+<span class="s2">    OR CompanyName IS NULL</span>
+<span class="s2">UNION</span>
+<span class="s2">SELECT CONCAT("    ", COUNT(*), " Mssing All")</span>
+<span class="s2">FROM us_companies</span>
+<span class="s2">WHERE (</span>
+<span class="s2">        CompanyName = ''</span>
+<span class="s2">        OR CompanyName IS NULL</span>
+<span class="s2">    )</span>
+<span class="s2">    AND (</span>
+<span class="s2">        Ticker = ''</span>
+<span class="s2">        OR Ticker IS NULL</span>
+<span class="s2">    )</span>
+<span class="s2">    AND (</span>
+<span class="s2">        CIK = ''</span>
+<span class="s2">        OR CIK IS NULL</span>
+<span class="s2">    );</span>
+<span class="s2">"""</span>
+
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">desc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">description</span><span class="p">])</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>Missing Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+<tr>
+<td>2124 Missing CIKs</td>
+</tr>
+<tr>
+<td>39 Missing Tickers</td>
+</tr>
+<tr>
+<td>37 Missing Company Names</td>
+</tr>
+<tr>
+<td>2 Mssing All</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dae9803b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next, we deleted from the table any rows that had a NULL value for <code>Ticker</code> and <code>CompanyName</code>. These rows had insufficient identifying information.</p>
+<p>Then, we delete the rows</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e9663bd4">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=954e9850">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8767,7 +8940,7 @@ window.addEventListener('load', () => {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">DELETE</span> <span class="n">FROM</span> <span class="n">us_companies</span> 
-<span class="n">WHERE</span> <span class="p">(</span><span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">AND</span> <span class="n">CompanyName</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="n">WHERE</span> <span class="p">(</span><span class="n">Ticker</span> <span class="o">=</span> <span class="s1">''</span> <span class="n">OR</span> <span class="n">Ticker</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">)</span> <span class="n">AND</span> <span class="p">(</span><span class="n">CompanyName</span> <span class="o">=</span> <span class="s1">''</span> <span class="n">OR</span> <span class="n">CompanyName</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">)</span> <span class="n">AND</span> <span class="p">(</span><span class="n">CIK</span> <span class="o">=</span> <span class="s1">''</span> <span class="n">OR</span> <span class="n">CIK</span> <span class="n">IS</span> <span class="n">NULL</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -10388,46 +10561,11 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">metrics_activity</span><span class="p">;</span>
 
-<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_activity</span> <span class="n">AS</span>
+<span class="o">--</span> <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_activity</span> <span class="n">AS</span>
 <span class="n">SELECT</span>
     <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
     <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
-    <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span>
-        <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-        <span class="n">WHERE</span>
-            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
-        <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">ASC</span>
-        <span class="n">LIMIT</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="n">AS</span> <span class="n">PricesDate</span><span class="p">,</span>
-    <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Close</span>
-        <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-        <span class="n">WHERE</span>
-            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
-        <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">ASC</span>
-        <span class="n">LIMIT</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PE</span><span class="p">,</span>
-    <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Close</span>
-        <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-        <span class="n">WHERE</span>
-            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
-        <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">ASC</span>
-        <span class="n">LIMIT</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">Revenue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PS</span><span class="p">,</span>
-    <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Close</span>
-        <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-        <span class="n">WHERE</span>
-            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
-        <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">ASC</span>
-        <span class="n">LIMIT</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">TotalEquity</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PB</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">Revenue</span> <span class="o">/</span> <span class="n">LAG</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">TotalAssets</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="n">BY</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">)</span> <span class="n">AS</span> <span class="n">SalesTurnover</span>
 <span class="n">FROM</span>
     <span class="n">us_income_quarterly</span> <span class="n">isq</span>
     <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
@@ -10438,12 +10576,12 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=de5f28f1">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=de5f28f1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -10469,6 +10607,71 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>Ticker</th>
+<th>ReportDate</th>
+<th>PricesDate</th>
+<th>PE</th>
+<th>PS</th>
+<th>PB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZUO</td>
+<td>2021-04-30</td>
+<td>2021-04-30</td>
+<td>-9.200000e-07</td>
+<td>2.000000e-07</td>
+<td>9.000000e-08</td>
+</tr>
+<tr>
+<td>ZYME</td>
+<td>2020-12-31</td>
+<td>2020-12-31</td>
+<td>-1.250000e-06</td>
+<td>3.020000e-06</td>
+<td>1.200000e-07</td>
+</tr>
+<tr>
+<td>ZYNE</td>
+<td>2020-12-31</td>
+<td>2020-12-31</td>
+<td>-3.400000e-07</td>
+<td>NaN</td>
+<td>5.000000e-08</td>
+</tr>
+<tr>
+<td>ZYNE</td>
+<td>2021-03-31</td>
+<td>2021-03-31</td>
+<td>-5.800000e-07</td>
+<td>NaN</td>
+<td>5.000000e-08</td>
+</tr>
+<tr>
+<td>ZYNE</td>
+<td>2022-12-31</td>
+<td>2023-01-03</td>
+<td>-7.000000e-08</td>
+<td>NaN</td>
+<td>1.000000e-08</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aea3a4e9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -10476,7 +10679,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Value-Ratios">Value Ratios<a class="anchor-link" href="#Value-Ratios">¶</a></h2><p>Valuation ratios connect fundamentals to market expectations. They measure how investors price a company relative to its earnings, cash flow, book value, or sales. Ratios like P/E, P/B, P/S, and EV/EBITDA help determine whether a stock appears undervalued, fairly valued, or overvalued. These metrics reflect sentiment, growth expectations, and perceived risk. In downstream analysis, valuation ratios bridge the gap between internal performance and external market behavior, enabling more informed investment decisions.</p>
+<h2 id="Valuation-Ratios">Valuation Ratios<a class="anchor-link" href="#Valuation-Ratios">¶</a></h2><p>Valuation ratios connect fundamentals to market expectations. They measure how investors price a company relative to its earnings, cash flow, book value, or sales. Ratios like P/E, P/B, P/S, and EV/EBITDA help determine whether a stock appears undervalued, fairly valued, or overvalued. These metrics reflect sentiment, growth expectations, and perceived risk. In downstream analysis, valuation ratios bridge the gap between internal performance and external market behavior, enabling more informed investment decisions.</p>
 </div>
 </div>
 </div>
@@ -11007,6 +11210,21 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1><p>By converting raw fundamentals into a structured suite of ratios, this project creates a powerful analytical engine for understanding corporate performance. Each ratio group provides a different lens - profitability shows value creation, liquidity shows short‑term stability, solvency shows long‑term risk, efficiency shows operational execution, and valuation shows market perception. Together, they form a holistic framework that supports modeling, screening, forecasting, and strategic insights. This ratio‑driven foundation ensures that downstream analysis is not only data‑rich but also economically meaningful.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c8d41649">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Further-Ideas">Further Ideas<a class="anchor-link" href="#Further-Ideas">¶</a></h1><p>The data output from this project are informative and set the stage for further analysis. However, there are additional improvements that could be made to improve the efficiency of the data acquisition, processing, and output quality. They include:</p>
+<ol>
+<li>Fetching the raw data from SimFin via its native API. This could involve download, unzipping, and folder cleanup.</li>
+<li>Handling outlier values. For example, the stock prices contained extreme, probably incorrect data values. These could be deleted to ensure they do not affect subsequent calculations.</li>
+</ol>
 </div>
 </div>
 </div>
