@@ -73,6 +73,28 @@ function addSmoothToggleButtons() {
     pre.closest(".jp-CodeCell").style.display = "none";
   }
 });
+  
+document.querySelectorAll(".cm-editor").forEach(editor => {
+  const text = editor.textContent || "";
+  const shouldHide = text.includes("HideCell");
+
+  if (shouldHide) {
+    // Hide the .code-transition wrapper
+    const codeTransition = editor.closest(".code-transition");
+    if (codeTransition) {
+      codeTransition.style.display = "none";
+    }
+
+    // Hide the adjacent .toggle-btn
+    const toggleBtn = codeTransition?.previousElementSibling;
+    if (toggleBtn && toggleBtn.classList.contains("toggle-btn")) {
+      toggleBtn.style.display = "none";
+    }
+  }
+});
+
+
+
 }
 
 document.addEventListener("DOMContentLoaded", addSmoothToggleButtons);
