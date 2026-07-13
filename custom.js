@@ -93,8 +93,6 @@ document.querySelectorAll(".cm-editor").forEach(editor => {
   }
 });
 
-
-
 }
 
 document.addEventListener("DOMContentLoaded", addSmoothToggleButtons);
