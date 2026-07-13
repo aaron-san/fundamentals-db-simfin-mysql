@@ -3,14 +3,8 @@ body,
 .jp-LabShell,
 .jp-NotebookPanel,
 .jp-Notebook {
-  /* height: 100%; */
-  /* margin: 6rem 1rem 4rem 1rem; */
   padding: 2rem 0 0 0;
   margin: 0;
-  /* position: relative; */
-  /* background: url("https://t4.ftcdn.net/jpg/03/41/36/71/360_F_341367111_Cghn2q0TSlcsr4IwXmRYxbTJSE6oLLBN.jpg");
-  repeat-y center / cover; */
-  /* background: url("images/Painted White.jpg"); */
   overflow-wrap: break-word;
   font-family: "Roboto", sans-serif;
 }
@@ -19,15 +13,21 @@ html {
   padding: 0;
   margin: 0;
 }
+
+body {
+  margin: 0;
+}
+
 .jp-Notebook {
   padding: 0;
   margin: 0;
 }
 
-/* Optional: remove padding around output wrapper */
-/* .jp-MarkdownOutput {
-  background: transparent !important;
-} */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+}
 
 /* ----- UNIVERSAL MARKDOWN BACKGROUND ----- */
 .jp-MarkdownOutput .jp-RenderedHTMLCommon,
@@ -42,30 +42,16 @@ div.text_cell_render,
 .cell.markdown .output,
 .output-html,
 .output-markdown {
-  /* background: rgba(0, 0, 0, 0.1) !/important; */
-  /* background: white; */
   color: black !important;
-  /* padding: 12px !important; */
   border-radius: 0 !important;
-}
-
-@media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
 }
 
 /* --- Output area background --- */
 
 main {
-  /* width: 80%; */
   padding: 2rem 2rem 0;
   margin: 0 6rem 6rem;
   background: white;
-  /* border: 1px solid rgb(210, 210, 210); */
-  /* position: relative;
-    z-index: 10; */
-  /* background: url("images/Painted White.jpg"); */
 }
 
 @media (max-width: 600px) {
@@ -86,31 +72,16 @@ main {
 /* --- Toggle button --- */
 .toggle-btn {
   border: 1px solid #e5e3e3;
-  /* border-top: none; */
-  /* border-left: none; */
-  /* border-right: none; */
   border-radius: 16px !important;
-  /* text-decoration: underline; */
-  /* font-style: italic; */
   background: none;
-  /* width: 20%; */
   padding: 0 6px;
-  margin: none auto;
   letter-spacing: 0.5px;
-  /* border-bottom: 1px solid #ccc; */
-  /* padding: 2px 10px !important; */
   margin: 0 auto !important;
   font-size: 13px !important;
   cursor: pointer !important;
   color: rgb(189, 190, 190) !important;
-  /* background-color: #f9f8f8 !important; */
-  /* border: 1px solid #e9e8e8 !important; */
-  /* color: #555555 !important; */
   transition: all 0.35s ease;
 }
-/* .toggle-btn:hover { */
-/* background-color: #efefef !important; */
-/* } */
 
 /* --- Code transitions --- */
 .code-transition {
@@ -126,60 +97,32 @@ main {
   opacity: 1;
 }
 
-body {
-  margin: 0; /* remove default body margin */
+body.preload .jp-InputPrompt,
+body.preload .jp-OutputPrompt,
+body.preload .jp-CodeCell,
+body.preload .code-transition,
+body.preload .toggle-btn {
+  display: none !important;
 }
 
 img {
   width: 600px;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: #666;
 }
 
+/* --- Cover page --- */
 #cover-page-container {
   max-width: 900px;
   margin: 0 auto;
-  /* padding: 20px 0; */
 }
 #title-container h1 {
   font-size: 2.4rem;
   margin-bottom: 0.4rem;
 }
-#meta-data-container {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.95rem;
-  color: #9ca3af;
-}
-
-/* object-fit: cover; */
-/* opacity: 0.6; */
-/* filter: grayscale(100%) blur(2px); */
-/* filter: contrast(80%); */
-/* filter: opacity(70) grayscale(70%); */
-/* filter: saturate(80%) brightness(90%); */
-/* filter: saturate(70%); // color intensity */
-/* filter: saturate(70%) blur(1px); // color intensity */
-/* filter: sepia(80%); // add a warm brown tone */
-
-/* #title-container {
-    position: relative;
-    z-index: 1;
-    color: white;
-    top: 0px;
-    width: 100%;
-} */
-
-/* #cover-page-container { */
-/* position: absolute; Allows positioning of the image and text within the container */
-/* left: 0; */
-/* top: 0; */
-/* width: 100%; */
-/* height: 50px; */
-/* z-index: 1; */
-/* } */
 
 #cover-page-image {
   position: absolute;
@@ -187,22 +130,15 @@ h1, h2 {
   left: 0;
   width: 100%;
   height: 300px;
-  /* object-fit: cover; Ensures the image covers the entire container */
-  z-index: -1; /* Sends the image to the background */
+  z-index: -1;
 }
 
 #title-container {
-  /* position: absolute; Positioning on top of the image */
-  /* top: 50%; Position vertically in the middle */
-  /* left: 50%; */
-  /* transform: translate(-50%, -50%); Centers the text horizontally and vertically */
   color: rgb(100, 100, 100);
-  text-align: center; /* Centers the text */
+  text-align: center;
   padding: 1rem 6rem;
-  /* width: fit-content; */
   background: white;
   border-radius: 6px;
-  /* margin: 2rem auto 2rem; */
 }
 
 #meta-data-container {
@@ -223,27 +159,19 @@ h1, h2 {
 }
 
 #title-bar {
-  /* position: absolute;
-    bottom: 0;
-    left: 0; */
   width: 30%;
   text-align: center;
   margin: 0 auto;
-  height: 1px; /* You can adjust the height */
-  background-color: #fff; /* Adjust background color as needed */
+  background-color: #fff;
   height: 1px;
 }
 
-/* div:has(.jp-Cell-outputWrapper) { */
-/* padding: 1.4rem; */
-/* } */
-
+/* --- Panels --- */
 .panel-container {
   display: flex;
   justify-content: start;
   gap: 1rem;
   flex-wrap: wrap;
-  /* margin: 0 0 0.5rem 0; */
 }
 
 @media (max-width: 600px) {
@@ -256,15 +184,11 @@ h1, h2 {
 .panel {
   display: flex;
   flex-direction: column;
-  /* background: linear-gradient(to right bottom, rgb(55, 55, 55), rgb(84, 84, 84)); */
-  /* background-color: rgba(87, 87, 87, 0.7); */
-  /* color: white; */
   color: #333;
   padding: 0.5rem 1.2rem;
   border-radius: 4px;
   border: 1px solid rgb(60, 60, 60);
   max-width: 230px;
-  /* box-shadow: 2px 2px 8px 0px #999; */
   justify-content: center;
   margin-top: 4px;
 }
@@ -300,22 +224,6 @@ h1, h2 {
     rgb(200, 84, 84)
   );
 }
-/* .subpanel-green {
-    border: 1px solid white;
-    min-width: 80px;
-    max-width: 100px;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    background: linear-gradient(to right bottom, rgb(55, 95, 55), rgb(84, 199, 84));
-} */
-/* .subpanel-red {
-    border: 1px solid white;
-    min-width: 80px;
-    max-width: 100px;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    background: linear-gradient(to right bottom, rgb(95, 55, 55), rgb(200, 84, 84));
-} */
 
 .panel-brown {
   background: linear-gradient(
@@ -326,23 +234,22 @@ h1, h2 {
 }
 
 .panel-title {
-  /* font-decoration: bold; */
   text-align: center;
   font-size: 1.2rem;
   line-height: 1.2em;
   margin-bottom: 10px;
-  /* max-width: 160px; */
   color: rgb(30, 30, 30);
 }
 
 .panel-title > sup {
   font-size: 0.8rem;
 }
+
 .panel-date {
-  /* color: #c0bebe; */
   color: #555;
   text-align: center;
 }
+
 .panel-subtitle,
 .panel-group-subtitle {
   display: flex;
@@ -351,9 +258,11 @@ h1, h2 {
   width: 100%;
   text-align: center;
 }
+
 .panel-group-subtitle {
   border-bottom: 1px solid #999;
 }
+
 .panel-subtitle div {
   text-align: center;
 }
@@ -393,28 +302,19 @@ h1, h2 {
   margin: 0.5rem 0;
 }
 
-.jp-InputPrompt {
-  display: block !important;
-  /* width: 100%;
-    padding: 0; */
-}
-
 .panel-footer {
   color: rgb(250, 250, 250);
   text-align: center;
 }
 
-/* Hide the Python HTML() cells */
-/* .jp-CodeCell .jp-Cell-inputWrapper
-{
-    display: none !important;
-} */
+.panel-container * {
+  min-width: 0 !important;
+}
 
-/* div.jp-Cell-inputWrapper
-  > div.jp-InputArea.jp-Cell-inputArea
-  > div.jp-InputPrompt.jp-InputArea-prompt {
-  display: none !important;
-} */
+/* --- Input cells / code mirror --- */
+.jp-InputPrompt {
+  display: block !important;
+}
 
 .jp-InputArea.jp-Cell-inputArea {
   margin-top: 8px;
@@ -425,12 +325,11 @@ div
   > div.jp-InputArea.jp-Cell-inputArea
   > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
   div {
-  /* div > div > div.jp-InputArea.jp-Cell-inputArea > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor > div div { */
-  background: white !important;
+  background: rgb(247, 247, 246) !important;
   padding: 12px;
 }
 
-/* Add Scrollbar to cell inputs */
+/* Add scrollbar to cell inputs */
 div
   > div.jp-InputArea.jp-Cell-inputArea
   > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
@@ -441,32 +340,24 @@ div
   border-radius: 8px;
 }
 
-div
-  > div
-  > div.jp-InputArea.jp-Cell-inputArea
-  > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
-  div {
-  background: rgb(247, 247, 246) !important;
-}
-
-/* div > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor { */
-/* } */
-
 .jp-InputArea-editor {
   border: none !important;
 }
 
 div > div.jp-InputArea.jp-Cell-inputArea {
-  /* background: red; */
-  /* -webkit-border-radius: 20px; */
   border-radius: 8px !important;
 }
 
+div
+  > div
+  > div.jp-InputArea.jp-Cell-inputArea
+  > div.jp-InputPrompt.jp-InputArea-prompt {
+  display: none !important;
+}
+
+/* --- Output images --- */
 .jp-CodeCell > .jp-Cell-outputWrapper img {
-  /* border: 2px solid #999; */
   border-radius: 5px;
-  /* box-shadow: 0px 0px 14px 0px #999; */
-  /* border: 1px solid rgb(60,60,60); */
 }
 
 @media (max-width: 600px) {
@@ -481,23 +372,7 @@ div > div.jp-InputArea.jp-Cell-inputArea {
   }
 }
 
-/* div > div.jp-InputArea.jp-Cell-inputArea > div.jp-RenderedHTMLCommon.jp-RenderedMarkdown.jp-MarkdownOutput p img {
-    border-radius: 5px;
-    margin-top: 4px;
-    box-shadow: 2px 2px 8px 0px #999;
-    /* max-width: 98%; */
-
-.jp-RenderedHTMLCommon {
-  padding-right: 5px;
-}
-
-/* .jp-Cell .jp-CodeCell, .jp-mod-noOutputs {
-    display: none !important;
-}     */
-
-/* .celltag_remove_cell, .jp-RenderedText {
-        display: none !important;    
-} */
+/* --- Output prompts --- */
 .jp-OutputPrompt,
 .jp-OutputArea-prompt {
   display: block !important;
@@ -505,22 +380,7 @@ div > div.jp-InputArea.jp-Cell-inputArea {
   margin-left: 0 !important;
 }
 
-jp-OutputPrompt.jp-OutputArea-prompt {
-  display: none;
-}
-
-/*
-
-.jp-Cell.jp-CodeCell.jp-Notebook-cell {
-  border: 2px solid dodgerblue;
-  border-radius: 6px;
-  margin: 8px 0;
-} */
-
-/* .jp-Notebook-cell.celltag_remove_cell {
-    display: none !important;
-} */
-
+/* --- Notes --- */
 .note {
   background: rgb(240, 240, 240);
   border-radius: 4px;
@@ -552,53 +412,45 @@ jp-OutputPrompt.jp-OutputArea-prompt {
   z-index: 1;
 }
 
-/* .jp-Notebook.jp-Cell:not(.jp-mod-active).jp-OutputPrompt {
-    display: none;
-} */
-/* .jp-OutputPrompt, .jp-OutputArea-prompt {
-    display: none important!;
-} */
-/* div.jp-Cell-outputWrapper > div.jp-OutputArea.jp-Cell-outputArea > div > div.jp-OutputPrompt.jp-OutputArea-prompt {
-    display: none;
-} */
-
-div
-  > div
-  > div.jp-InputArea.jp-Cell-inputArea
-  > div.jp-InputPrompt.jp-InputArea-prompt {
-  display: none !important;
+div:has(.note) {
+  padding: 4px 0;
 }
 
-/* .jp-Cell.jp-CodeCell {
-  margin: 0 4rem;
-} */
+/* --- Output area / table horizontal scroll fix ---
+   .table-wrapper is the single scroll container; every ancestor
+   in the output chain must stay overflow-x: visible / max-width: none
+   so it doesn't compete with the wrapper for the scrollbar. */
+.jp-RenderedHTMLCommon {
+  padding-right: 0 !important;
+}
+
+.jp-OutputArea-child,
+.jp-OutputArea-output,
+.jp-RenderedHTMLCommon,
+.jp-OutputArea,
+.jp-Cell-outputWrapper {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  max-width: none !important;
+}
+
+.jp-Cell-outputArea {
+  padding: 10px !important;
+}
 
 .table-wrapper {
-  overflow-x: auto;
+  overflow-x: auto !important;
+  display: block;
+  max-width: 100% !important;
   -webkit-overflow-scrolling: touch !important;
   border: 1px solid rgb(204, 204, 204);
-  width: 100%;
-  /* margin: 2rem 4rem; */
+  width: fit-content;
   padding: 0.5rem 1rem;
+  box-sizing: border-box;
 }
 
-/* Let the table grow naturally */
 .table-wrapper table {
-  width: max-content; /* key fix */
   width: max-content;
   min-width: max-content;
   table-layout: auto;
-}
-
-.jp-OutputArea {
-  overflow-x: auto !important;
-}
-
-/* div.jp-Cell-outputWrapper > div.jp-OutputArea */
-.jp-Cell-outputArea {
-  padding: 10px important!;
-}
-
-div:has(.note) {
-  padding: 4px 0;
 }
