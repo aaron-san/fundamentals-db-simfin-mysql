@@ -9599,6 +9599,182 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=842aaff7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Dates-Lookup-Table">Dates Lookup Table<a class="anchor-link" href="#Dates-Lookup-Table">¶</a></h2><p>Dates are an important part of any analysis that uses fundamentals data. Market price dates don't always align with fundamentals dates. Moreover, there are many kinds of dates to consider. Any serious analysis would try to avoid lookback bias where we assume a decision based on information not yet known. To avoid this bias, the stock price date following the fundamentals publish date was collected.</p>
+<p>For backtesting decisions, it is often easier to use a regular month-end price date where the month-end date is the end of the month following the publish date. The month-end date following the publish date was calculated as the last day of the publish-date month or, if the publish date is within 3 days of the month end, the last day of the following month.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1f64f41a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">dates_lookup</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">dates_lookup</span> <span class="n">AS</span>
+<span class="n">SELECT</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
+    <span class="n">prc</span><span class="o">.</span><span class="n">PrevCloseDate</span><span class="p">,</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span><span class="p">,</span>
+    <span class="n">ndp</span><span class="o">.</span><span class="n">NextMarketDateFollowingPublish</span><span class="p">,</span>
+    <span class="n">mep</span><span class="o">.</span><span class="n">NextMonthEndDateFollowingPublish</span>
+<span class="n">FROM</span> <span class="n">us_income_quarterly</span> <span class="n">isq</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
+    <span class="n">ON</span> <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
+    <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">LATERAL</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+    <span class="n">Date</span> <span class="n">AS</span> <span class="n">PrevCloseDate</span>
+    <span class="n">FROM</span> <span class="n">us_shareprices_daily</span>
+    <span class="n">WHERE</span> <span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
+      <span class="n">AND</span> <span class="n">Date</span> <span class="o">&lt;</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
+    <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Date</span> <span class="n">DESC</span>
+    <span class="n">LIMIT</span> <span class="mi">1</span>
+<span class="p">)</span> <span class="n">prc</span> <span class="n">ON</span> <span class="n">TRUE</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">LATERAL</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+    <span class="n">Date</span> <span class="n">AS</span> <span class="n">NextMarketDateFollowingPublish</span>
+    <span class="n">FROM</span> <span class="n">us_shareprices_daily</span>
+    <span class="n">WHERE</span> <span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
+      <span class="n">AND</span> <span class="n">Date</span> <span class="o">&gt;</span> <span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span>
+    <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Date</span> <span class="n">ASC</span>
+    <span class="n">LIMIT</span> <span class="mi">1</span>
+<span class="p">)</span> <span class="n">ndp</span> <span class="n">ON</span> <span class="n">TRUE</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">LATERAL</span> <span class="p">(</span>
+    <span class="n">SELECT</span> 
+    <span class="n">pr2</span><span class="o">.</span><span class="n">Date</span> <span class="n">AS</span> <span class="n">NextMonthEndDateFollowingPublish</span>
+    <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr2</span>
+    <span class="n">WHERE</span> <span class="n">pr2</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
+      <span class="n">AND</span> <span class="n">pr2</span><span class="o">.</span><span class="n">Date</span> <span class="o">&lt;=</span> <span class="p">(</span>
+            <span class="n">CASE</span> 
+                <span class="n">WHEN</span> <span class="n">DATEDIFF</span><span class="p">(</span><span class="n">LAST_DAY</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span><span class="p">),</span> <span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span>
+                    <span class="n">THEN</span> <span class="n">LAST_DAY</span><span class="p">(</span><span class="n">DATE_ADD</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span><span class="p">,</span> <span class="n">INTERVAL</span> <span class="mi">1</span> <span class="n">MONTH</span><span class="p">))</span>
+                <span class="n">ELSE</span> <span class="n">LAST_DAY</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">PublishDate</span><span class="p">)</span>
+            <span class="n">END</span>
+      <span class="p">)</span>
+    <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr2</span><span class="o">.</span><span class="n">Date</span> <span class="n">DESC</span>
+    <span class="n">LIMIT</span> <span class="mi">1</span>
+<span class="p">)</span> <span class="n">mep</span> <span class="n">ON</span> <span class="n">TRUE</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1d9a13b5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [99]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"mysql_creds.json"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"mysql+pymysql://</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span><span class="si">}</span><span class="s2">@localhost/</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">SELECT *</span>
+<span class="s2">FROM dates_lookup</span>
+<span class="s2">WHERE</span>
+<span class="s2">    ReportDate BETWEEN '2023-01-01' AND '2023-12-31'</span>
+<span class="s2">ORDER BY ReportDate DESC</span>
+<span class="s2">LIMIT 10;"""</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># -- df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[99]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>Ticker</th>
+<th>ReportDate</th>
+<th>PrevCloseDate</th>
+<th>PublishDate</th>
+<th>NextMarketDateFollowingPublish</th>
+<th>NextMonthEndDateFollowingPublish</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AAT</td>
+<td>2023-12-31</td>
+<td>2023-12-29</td>
+<td>2024-02-14</td>
+<td>2024-02-15</td>
+<td>2024-02-29</td>
+</tr>
+<tr>
+<td>AAWH</td>
+<td>2023-12-31</td>
+<td>2023-12-29</td>
+<td>2024-03-13</td>
+<td>2024-03-14</td>
+<td>2024-03-28</td>
+</tr>
+<tr>
+<td>AA</td>
+<td>2023-12-31</td>
+<td>2023-12-29</td>
+<td>2024-02-21</td>
+<td>2024-02-22</td>
+<td>2024-02-29</td>
+</tr>
+<tr>
+<td>AACT</td>
+<td>2023-12-31</td>
+<td>2023-12-29</td>
+<td>2024-02-12</td>
+<td>2024-02-13</td>
+<td>2024-02-29</td>
+</tr>
+<tr>
+<td>AAL</td>
+<td>2023-12-31</td>
+<td>2023-12-29</td>
+<td>2024-02-21</td>
+<td>2024-02-22</td>
+<td>2024-02-29</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=daf4ecbe">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -9619,37 +9795,56 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">metrics_misc</span><span class="p">;</span>
 
-<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_misc</span> <span class="n">AS</span> <span class="p">(</span>
-    <span class="n">WITH</span>
-        <span class="n">cte</span> <span class="n">AS</span> <span class="p">(</span>
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_misc</span> <span class="n">AS</span>  
+<span class="n">WITH</span>
+    <span class="n">price_lookup</span> <span class="n">AS</span> <span class="p">(</span>
+        <span class="n">SELECT</span>
+            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
+            <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">AS</span> <span class="n">PrevCloseDate</span><span class="p">,</span>
+            <span class="n">pr</span><span class="o">.</span><span class="n">Close</span> <span class="n">AS</span> <span class="n">PrevClosePrice</span>
+        <span class="n">FROM</span> <span class="p">(</span>
             <span class="n">SELECT</span>
                 <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
                 <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
-                <span class="n">bsq</span><span class="o">.</span><span class="n">CashAndEquiv</span><span class="p">,</span>
-                <span class="n">CASE</span>
-                    <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">IncomeTaxExpenseBenefitNet</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
-                    <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">PretaxIncomeLoss</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
-                    <span class="n">ELSE</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">isq</span><span class="o">.</span><span class="n">IncomeTaxExpenseBenefitNet</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">PretaxIncomeLoss</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">END</span> <span class="n">AS</span> <span class="n">EffectiveTaxRate</span><span class="p">,</span>
-                <span class="n">cfq</span><span class="o">.</span><span class="n">SharesBasic</span> <span class="o">*</span> <span class="p">(</span>
-                    <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Close</span>
+                <span class="p">(</span>
+                    <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span>
                     <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-                    <span class="n">WHERE</span>
-                        <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-                        <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&lt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
+                    <span class="n">WHERE</span> <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
+                      <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&lt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
                     <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">DESC</span>
                     <span class="n">LIMIT</span> <span class="mi">1</span>
-                <span class="p">)</span> <span class="n">AS</span> <span class="n">MarketCap</span><span class="p">,</span>
-                <span class="n">bsq</span><span class="o">.</span><span class="n">ShortTermDebt</span> <span class="o">+</span> <span class="n">bsq</span><span class="o">.</span><span class="n">LongTermDebt</span> <span class="n">AS</span> <span class="n">TotalDebt</span><span class="p">,</span>
-                <span class="n">cfq</span><span class="o">.</span><span class="n">NetCashFromOperatingActivities</span> <span class="o">+</span> <span class="n">cfq</span><span class="o">.</span><span class="n">ChangeInFixedAssetsIntangibles</span> <span class="n">AS</span> <span class="n">FreeCashFlow</span>
-            <span class="n">FROM</span>
-                <span class="n">us_income_quarterly</span> <span class="n">isq</span>
-                <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
-                <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_balance_quarterly</span> <span class="n">bsq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="n">SELECT</span> <span class="n">cte</span><span class="o">.*</span><span class="p">,</span> <span class="n">cte</span><span class="o">.</span><span class="n">MarketCap</span> <span class="o">+</span> <span class="n">cte</span><span class="o">.</span><span class="n">TotalDebt</span> <span class="o">-</span> <span class="n">cte</span><span class="o">.</span><span class="n">CashAndEquiv</span> <span class="n">AS</span> <span class="n">EnterpriseValue</span>
-    <span class="n">FROM</span> <span class="n">cte</span>
-<span class="p">)</span>
+                <span class="p">)</span> <span class="n">AS</span> <span class="n">MarketPriceDate</span>
+            <span class="n">FROM</span> <span class="n">us_income_quarterly</span> <span class="n">isq</span>
+        <span class="p">)</span> <span class="n">x</span>
+        <span class="n">JOIN</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
+            <span class="n">ON</span> <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">Ticker</span>
+           <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">MarketPriceDate</span>
+    <span class="p">),</span>
+    <span class="n">cte</span> <span class="n">AS</span> <span class="p">(</span>
+        <span class="n">SELECT</span>
+            <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
+            <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
+            <span class="n">bsq</span><span class="o">.</span><span class="n">CashAndEquiv</span><span class="p">,</span>
+            <span class="n">CASE</span>
+                <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">IncomeTaxExpenseBenefitNet</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
+                <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">PretaxIncomeLoss</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
+                <span class="n">ELSE</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">isq</span><span class="o">.</span><span class="n">IncomeTaxExpenseBenefitNet</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">PretaxIncomeLoss</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">END</span> <span class="n">AS</span> <span class="n">EffectiveTaxRate</span><span class="p">,</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">PrevCloseDate</span><span class="p">,</span>
+            <span class="n">cfq</span><span class="o">.</span><span class="n">SharesBasic</span> <span class="o">*</span> <span class="n">pl</span><span class="o">.</span><span class="n">PrevClosePrice</span> <span class="n">AS</span> <span class="n">MarketCap</span><span class="p">,</span>
+            <span class="n">bsq</span><span class="o">.</span><span class="n">ShortTermDebt</span> <span class="o">+</span> <span class="n">bsq</span><span class="o">.</span><span class="n">LongTermDebt</span> <span class="n">AS</span> <span class="n">TotalDebt</span><span class="p">,</span>
+            <span class="n">cfq</span><span class="o">.</span><span class="n">NetCashFromOperatingActivities</span> <span class="o">+</span> <span class="n">cfq</span><span class="o">.</span><span class="n">ChangeInFixedAssetsIntangibles</span> <span class="n">AS</span> <span class="n">FreeCashFlow</span>
+        <span class="n">FROM</span>
+            <span class="n">us_income_quarterly</span> <span class="n">isq</span>
+            <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+            <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_balance_quarterly</span> <span class="n">bsq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+            <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">price_lookup</span> <span class="n">pl</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">SELECT</span>
+    <span class="n">cte</span><span class="o">.*</span><span class="p">,</span>
+    <span class="n">cte</span><span class="o">.</span><span class="n">MarketCap</span> <span class="o">+</span> <span class="n">cte</span><span class="o">.</span><span class="n">TotalDebt</span> <span class="o">-</span> <span class="n">cte</span><span class="o">.</span><span class="n">CashAndEquiv</span> <span class="n">AS</span> <span class="n">EnterpriseValue</span>
+<span class="n">FROM</span> <span class="n">cte</span>
 </pre></div>
 </div>
 </div>
@@ -9660,7 +9855,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -9677,7 +9872,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
     <span class="sa">f</span><span class="s2">"mysql+pymysql://</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span><span class="si">}</span><span class="s2">@localhost/</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 <span class="p">)</span>
 \
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_misc"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_misc WHERE PrevCloseDate IS NOT NULL AND TotalDebt &gt; 0 AND EffectiveTaxRate IS NOT NULL"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
 
 <span class="c1"># -- df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
@@ -9691,7 +9886,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <table border="1" class="dataframe">
 <thead>
@@ -9700,6 +9895,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <th>ReportDate</th>
 <th>CashAndEquiv</th>
 <th>EffectiveTaxRate</th>
+<th>PrevCloseDate</th>
 <th>MarketCap</th>
 <th>TotalDebt</th>
 <th>FreeCashFlow</th>
@@ -9708,54 +9904,59 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </thead>
 <tbody>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2024-03-31</td>
-<td>32861000.0</td>
-<td>0.2308</td>
-<td>NaN</td>
-<td>57839000.0</td>
-<td>1915000.0</td>
-<td>NaN</td>
+<td>1975000000</td>
+<td>0.1981</td>
+<td>2024-03-28</td>
+<td>7.749818e+10</td>
+<td>6586000000</td>
+<td>456000000.0</td>
+<td>8.210918e+10</td>
 </tr>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2024-06-30</td>
-<td>30896000.0</td>
-<td>0.2464</td>
-<td>NaN</td>
-<td>58078000.0</td>
-<td>997000.0</td>
-<td>NaN</td>
+<td>1574000000</td>
+<td>0.2000</td>
+<td>2024-06-28</td>
+<td>7.896548e+10</td>
+<td>6563000000</td>
+<td>370000000.0</td>
+<td>8.395448e+10</td>
 </tr>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2024-09-30</td>
-<td>37630000.0</td>
-<td>0.2502</td>
-<td>NaN</td>
-<td>58320000.0</td>
-<td>7002000.0</td>
-<td>NaN</td>
+<td>1714000000</td>
+<td>0.2082</td>
+<td>2024-09-30</td>
+<td>8.848760e+10</td>
+<td>6574000000</td>
+<td>784000000.0</td>
+<td>9.334760e+10</td>
 </tr>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2024-12-31</td>
-<td>39631000.0</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>58567000.0</td>
-<td>2229000.0</td>
-<td>NaN</td>
+<td>1987000000</td>
+<td>0.2063</td>
+<td>2024-12-31</td>
+<td>7.338367e+10</td>
+<td>6570000000</td>
+<td>688000000.0</td>
+<td>7.796667e+10</td>
 </tr>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2025-03-31</td>
-<td>23852000.0</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>58818000.0</td>
-<td>-10671000.0</td>
-<td>NaN</td>
+<td>1721000000</td>
+<td>0.2212</td>
+<td>2025-03-31</td>
+<td>7.369734e+10</td>
+<td>6577000000</td>
+<td>337000000.0</td>
+<td>7.855334e+10</td>
 </tr>
 </tbody>
 </table>
@@ -9770,7 +9971,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Growth-Metrics">Growth Metrics<a class="anchor-link" href="#Growth-Metrics">¶</a></h2><p>Growth rates - both year-on-year and quarter-on-quarter - are useful for trend analysis. The year-on-year (YoY) changes for various key series were computed and added to a <code>metrics_growth</code> table.</p>
+<h2 id="Growth-Metrics">Growth Metrics<a class="anchor-link" href="#Growth-Metrics">¶</a></h2><p>Growth rates - both year-on-year (YoY) and quarter-on-quarter (QoQ) - are useful for trend analysis. The year-on-year (YoY) changes for various key series were computed and added to a <code>metrics_growth</code> table.</p>
 </div>
 </div>
 </div>
@@ -10038,14 +10239,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
     <span class="n">isq</span><span class="o">.</span><span class="n">OperatingIncomeLoss</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">misc</span><span class="o">.</span><span class="n">EffectiveTaxRate</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
         <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">TotalEquity</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">ShortTermDebt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">LongTermDebt</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">CashAndEquiv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="p">)</span> <span class="n">AS</span> <span class="n">ROIC</span><span class="p">,</span>
-    <span class="n">isq</span><span class="o">.</span><span class="n">OperatingIncomeLoss</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span>
-        <span class="n">LAG</span><span class="p">(</span><span class="n">misc</span><span class="o">.</span><span class="n">EnterpriseValue</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span>
-            <span class="n">PARTITION</span> <span class="n">BY</span>
-                <span class="n">misc</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">misc</span><span class="o">.</span><span class="n">ReportDate</span>
-        <span class="p">),</span>
-        <span class="mi">0</span>
-    <span class="p">)</span> <span class="n">AS</span> <span class="n">EBITToEV</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">OperatingIncomeLoss</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">misc</span><span class="o">.</span><span class="n">EnterpriseValue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">EBITToEV</span>
 <span class="n">FROM</span>
     <span class="n">us_income_quarterly</span> <span class="n">isq</span>
     <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
@@ -10061,7 +10255,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [97]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -10077,8 +10271,11 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
     <span class="sa">f</span><span class="s2">"mysql+pymysql://</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span><span class="si">}</span><span class="s2">@localhost/</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 <span class="p">)</span>
-\
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_profitability"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
+    <span class="s2">"SELECT * FROM metrics_profitability WHERE GrossMargin IS NOT NULL AND EBITToEV IS NOT NULL AND OperatingMargin IS NOT NULL AND ROIC IS NOT NULL"</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># -- df = pd.DataFrame(cursor.fetchall(), columns=[desc[0] for desc in cursor.description])</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
@@ -10092,7 +10289,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[97]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <table border="1" class="dataframe">
 <thead>
@@ -10110,59 +10307,59 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </thead>
 <tbody>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
+<td>2023-09-30</td>
+<td>0.7034</td>
+<td>0.3710</td>
+<td>0.2771</td>
+<td>0.0433</td>
+<td>0.1290</td>
+<td>0.067176</td>
+<td>0.0094</td>
+</tr>
+<tr>
+<td>ZTS</td>
+<td>2023-12-31</td>
+<td>0.6710</td>
+<td>0.3204</td>
+<td>0.2372</td>
+<td>0.0372</td>
+<td>0.1035</td>
+<td>0.059941</td>
+<td>0.0075</td>
+</tr>
+<tr>
+<td>ZTS</td>
 <td>2024-03-31</td>
-<td>0.8002</td>
-<td>0.0113</td>
-<td>0.0002</td>
-<td>0.0001</td>
-<td>0.0002</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>0.7064</td>
+<td>0.3658</td>
+<td>0.2735</td>
+<td>0.0419</td>
+<td>0.1200</td>
+<td>0.066472</td>
+<td>0.0098</td>
 </tr>
 <tr>
-<td>ZYXI</td>
-<td>2024-06-30</td>
-<td>0.8001</td>
-<td>0.0446</td>
-<td>0.0244</td>
-<td>0.0096</td>
-<td>0.0368</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>ZYXI</td>
-<td>2024-09-30</td>
-<td>0.7963</td>
-<td>0.0761</td>
-<td>0.0477</td>
-<td>0.0195</td>
-<td>0.0726</td>
-<td>NaN</td>
-<td>NaN</td>
-</tr>
-<tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2024-12-31</td>
-<td>0.7829</td>
-<td>-0.0122</td>
-<td>-0.0134</td>
-<td>-0.0049</td>
-<td>-0.0172</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>0.6949</td>
+<td>0.3302</td>
+<td>0.2508</td>
+<td>0.0405</td>
+<td>0.1110</td>
+<td>0.064918</td>
+<td>0.0098</td>
 </tr>
 <tr>
-<td>ZYXI</td>
+<td>ZTS</td>
 <td>2025-03-31</td>
-<td>0.6851</td>
-<td>-0.4928</td>
-<td>-0.3912</td>
-<td>-0.0852</td>
-<td>-0.2911</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>0.7188</td>
+<td>0.3694</td>
+<td>0.2739</td>
+<td>0.0423</td>
+<td>0.1262</td>
+<td>0.066490</td>
+<td>0.0103</td>
 </tr>
 </tbody>
 </table>
@@ -10294,57 +10491,26 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">metrics_value</span><span class="p">;</span>
 
 <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_value</span> <span class="n">AS</span>
-<span class="n">WITH</span>
-    <span class="n">ratios_price_date</span> <span class="n">AS</span> <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span> <span class="p">(</span>
-                <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span>
-                <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-                <span class="n">WHERE</span>
-                    <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-                    <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;=</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span>
-                <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="n">ASC</span>
-                <span class="n">LIMIT</span> <span class="mi">1</span>
-            <span class="p">)</span> <span class="n">AS</span> <span class="n">PricesDate</span>
-        <span class="n">FROM</span>
-            <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-            <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_income_quarterly</span> <span class="n">isq</span> <span class="n">ON</span> <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span>
-    <span class="p">)</span>
-<span class="n">SELECT</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span> <span class="n">rpd</span><span class="o">.</span><span class="n">PricesDate</span><span class="p">,</span> <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">pr</span><span class="o">.</span><span class="n">Close</span>
-        <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-        <span class="n">WHERE</span>
-            <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">pr</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">rpd</span><span class="o">.</span><span class="n">PricesDate</span>
-    <span class="p">)</span> <span class="o">/</span> 
-    <span class="n">CASE</span> 
-        <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">OR</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
-        <span class="n">ELSE</span> <span class="p">(</span>
-            <span class="n">SELECT</span> <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span> 
-            <span class="n">FROM</span> <span class="n">us_shareprices_daily</span> <span class="n">pr</span>
-            <span class="n">WHERE</span>
-                <span class="n">pr</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-                <span class="n">AND</span> <span class="n">misc</span><span class="o">.</span><span class="n">ReportDate</span> <span class="o">=</span> <span class="n">rpd</span><span class="o">.</span><span class="n">PricesDate</span>
-        <span class="p">)</span> <span class="o">/</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span>
-    <span class="n">END</span> <span class="n">AS</span> <span class="n">PE</span><span class="p">,</span> <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span>
-        <span class="n">FROM</span> <span class="n">metrics_misc</span> <span class="n">misc</span>
-        <span class="n">WHERE</span>
-            <span class="n">misc</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">misc</span><span class="o">.</span><span class="n">ReportDate</span> <span class="o">=</span> <span class="n">rpd</span><span class="o">.</span><span class="n">PricesDate</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">Revenue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PS</span><span class="p">,</span> <span class="p">(</span>
-        <span class="n">SELECT</span> <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span>
-        <span class="n">FROM</span> <span class="n">metrics_misc</span> <span class="n">misc</span>
-        <span class="n">WHERE</span>
-            <span class="n">misc</span><span class="o">.</span><span class="n">Ticker</span> <span class="o">=</span> <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span>
-            <span class="n">AND</span> <span class="n">misc</span><span class="o">.</span><span class="n">ReportDate</span> <span class="o">=</span> <span class="n">rpd</span><span class="o">.</span><span class="n">PricesDate</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">TotalEquity</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PB</span>
-<span class="n">FROM</span>
-    <span class="n">us_income_quarterly</span> <span class="n">isq</span>
-    <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
-    <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_balance_quarterly</span> <span class="n">bsq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
-    <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">metrics_misc</span> <span class="n">misc</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
-    <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">ratios_price_date</span> <span class="n">rpd</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+<span class="o">--</span> <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">metrics_value</span> <span class="n">AS</span>
+<span class="n">SELECT</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">Ticker</span><span class="p">,</span>
+    <span class="n">isq</span><span class="o">.</span><span class="n">ReportDate</span><span class="p">,</span>
+    <span class="n">dts</span><span class="o">.</span><span class="n">PrevCloseDate</span> <span class="n">AS</span> <span class="n">PriceDate</span><span class="p">,</span>
+    <span class="o">--</span> <span class="n">PE</span> <span class="o">=</span> <span class="n">MarketCap</span> <span class="o">/</span> <span class="n">NetIncome</span>
+    <span class="n">CASE</span>
+        <span class="n">WHEN</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span> <span class="n">IS</span> <span class="n">NULL</span> <span class="n">OR</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">THEN</span> <span class="n">NULL</span>
+        <span class="n">ELSE</span> <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span> <span class="o">/</span> <span class="n">isq</span><span class="o">.</span><span class="n">NetIncome</span>
+    <span class="n">END</span> <span class="n">AS</span> <span class="n">PE</span><span class="p">,</span>
+    <span class="o">--</span> <span class="n">PS</span> <span class="o">=</span> <span class="n">MarketCap</span> <span class="o">/</span> <span class="n">Revenue</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">isq</span><span class="o">.</span><span class="n">Revenue</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PS</span><span class="p">,</span>
+    <span class="o">--</span> <span class="n">PB</span> <span class="o">=</span> <span class="n">MarketCap</span> <span class="o">/</span> <span class="n">TotalEquity</span>
+    <span class="n">misc</span><span class="o">.</span><span class="n">MarketCap</span> <span class="o">/</span> <span class="n">NULLIF</span><span class="p">(</span><span class="n">bsq</span><span class="o">.</span><span class="n">TotalEquity</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="n">AS</span> <span class="n">PB</span>
+
+<span class="n">FROM</span> <span class="n">us_income_quarterly</span> <span class="n">isq</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_cashflow_quarterly</span> <span class="n">cfq</span> <span class="n">USING</span> <span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_balance_quarterly</span> <span class="n">bsq</span> <span class="n">USING</span> <span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">metrics_misc</span> <span class="n">misc</span> <span class="n">USING</span> <span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
+<span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">dates_lookup</span> <span class="n">dts</span> <span class="n">USING</span> <span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -10355,7 +10521,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -10373,7 +10539,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <span class="p">)</span>
 
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_value"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_value WHERE PE IS NOT NULL AND PS IS NOT NULL AND PB IS NOT NULL"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
 
 <span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
@@ -10386,13 +10552,14 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <table border="1" class="dataframe">
 <thead>
 <tr style="text-align: right;">
 <th>Ticker</th>
 <th>ReportDate</th>
+<th>PriceDate</th>
 <th>PE</th>
 <th>PS</th>
 <th>PB</th>
@@ -10400,39 +10567,44 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </thead>
 <tbody>
 <tr>
-<td>ZUO</td>
-<td>2021-04-30</td>
-<td>-9.200000e-07</td>
-<td>2.000000e-07</td>
-<td>11.462709</td>
+<td>ZEUS</td>
+<td>2023-09-30</td>
+<td>2023-09-29</td>
+<td>53.250128</td>
+<td>1.237149</td>
+<td>1.185553</td>
 </tr>
 <tr>
-<td>ZYME</td>
-<td>2020-12-31</td>
-<td>-1.250000e-06</td>
-<td>3.020000e-06</td>
-<td>5.905741</td>
+<td>ZIP</td>
+<td>2022-03-31</td>
+<td>2022-03-30</td>
+<td>324.362823</td>
+<td>12.013385</td>
+<td>13.408320</td>
 </tr>
 <tr>
-<td>ZYNE</td>
-<td>2020-12-31</td>
-<td>-3.400000e-07</td>
-<td>NaN</td>
-<td>1.610323</td>
+<td>ZTS</td>
+<td>2021-12-31</td>
+<td>2021-12-30</td>
+<td>279.396667</td>
+<td>58.805399</td>
+<td>25.455594</td>
 </tr>
 <tr>
-<td>ZYNE</td>
-<td>2021-03-31</td>
-<td>-5.800000e-07</td>
-<td>NaN</td>
-<td>1.946462</td>
+<td>ZTS</td>
+<td>2024-12-31</td>
+<td>2024-12-30</td>
+<td>126.305804</td>
+<td>31.671848</td>
+<td>15.384418</td>
 </tr>
 <tr>
-<td>ZYNE</td>
-<td>2022-12-31</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>ZUMZ</td>
+<td>2021-10-31</td>
+<td>2021-10-29</td>
+<td>33.434131</td>
+<td>3.546302</td>
+<td>1.930438</td>
 </tr>
 </tbody>
 </table>
@@ -10604,6 +10776,96 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <span class="n">LEFT</span> <span class="n">JOIN</span> <span class="n">us_income_quarterly</span> <span class="n">isq</span> <span class="n">USING</span><span class="p">(</span><span class="n">Ticker</span><span class="p">,</span> <span class="n">ReportDate</span><span class="p">)</span>
 <span class="p">);</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aa5fd3f0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [77]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"mysql_creds.json"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">creds</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"mysql+pymysql://</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span><span class="si">}</span><span class="s2">@localhost/</span><span class="si">{</span><span class="n">creds</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_solvency WHERE InterestCoverageRatio IS NOT NULL LIMIT 5"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[77]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>Ticker</th>
+<th>ReportDate</th>
+<th>DebtToEquity</th>
+<th>DebtRatio</th>
+<th>InterestCoverageRatio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>2020-07-31</td>
+<td>0.4664</td>
+<td>0.4782</td>
+<td>12.7778</td>
+</tr>
+<tr>
+<td>A</td>
+<td>2020-10-31</td>
+<td>0.4841</td>
+<td>0.4938</td>
+<td>16.6111</td>
+</tr>
+<tr>
+<td>A</td>
+<td>2021-01-31</td>
+<td>0.5202</td>
+<td>0.5034</td>
+<td>17.2632</td>
+</tr>
+<tr>
+<td>A</td>
+<td>2021-04-30</td>
+<td>0.6096</td>
+<td>0.5374</td>
+<td>15.1579</td>
+</tr>
+<tr>
+<td>A</td>
+<td>2021-07-31</td>
+<td>0.5778</td>
+<td>0.5285</td>
+<td>16.0000</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
