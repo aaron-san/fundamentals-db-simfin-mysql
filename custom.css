@@ -436,6 +436,7 @@ div
   > div.jp-CodeMirrorEditor.jp-Editor.jp-InputArea-editor
   > div {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px dashed rgb(199, 199, 199);
   border-radius: 8px;
 }
