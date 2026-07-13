@@ -70,7 +70,7 @@ main {
 
 @media (max-width: 600px) {
   main {
-    margin: 10rem 0;
+    margin: 2rem 0;
     padding: 0 4px;
     border: none;
   }
@@ -130,7 +130,6 @@ img {
 h1 {
   color: #666;
 }
-
 
 #cover-page-container {
   max-width: 900px;
@@ -464,6 +463,10 @@ div > div.jp-InputArea.jp-Cell-inputArea {
     flex-direction: column;
     align-items: center;
   }
+
+  .jp-Cell.jp-CodeCell {
+    margin: 0 !important;
+  }
 }
 
 /* div > div.jp-InputArea.jp-Cell-inputArea > div.jp-RenderedHTMLCommon.jp-RenderedMarkdown.jp-MarkdownOutput p img {
@@ -557,6 +560,7 @@ div
 .jp-Cell.jp-CodeCell {
   margin: 0 4rem;
 }
+
 .table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
