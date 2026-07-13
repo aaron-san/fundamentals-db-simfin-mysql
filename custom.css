@@ -74,6 +74,13 @@ main {
     padding: 0 4px;
     border: none;
   }
+
+  h1 {
+    font-size: 18px !important;
+  }
+  h2 {
+    font-size: 16px !important;
+  }
 }
 
 /* --- Toggle button --- */
@@ -127,7 +134,7 @@ img {
   width: 600px;
 }
 
-h1 {
+h1, h2 {
   color: #666;
 }
 
@@ -209,6 +216,10 @@ h1 {
 
 #meta-data-container div {
   font-size: 14px;
+}
+
+#title {
+  font-size: 20px;
 }
 
 #title-bar {
@@ -557,9 +568,9 @@ div
   display: none !important;
 }
 
-.jp-Cell.jp-CodeCell {
+/* .jp-Cell.jp-CodeCell {
   margin: 0 4rem;
-}
+} */
 
 .table-wrapper {
   overflow-x: auto;
