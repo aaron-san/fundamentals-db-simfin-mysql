@@ -8027,7 +8027,7 @@ window.addEventListener('load', () => {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -9257,7 +9257,7 @@ window.addEventListener('load', () => {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next, we looked at the minimum and maximum prices for both <code>Close</code> and <code>AdjClose</code>.</p>
+<p>Next, the minimum and maximum prices for both <code>Close</code> and <code>AdjClose</code> were observed.</p>
 </div>
 </div>
 </div>
@@ -9362,7 +9362,7 @@ window.addEventListener('load', () => {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>The <code>Close</code> price ranged from \$0 to \$99,999,999.99.
 The <code>Adj. Close</code> price ranged from \$0 to \$9,984,240.00.</p>
-<p>We removed tickers where a <code>Close</code> or <code>AdjClose</code> price for any day exceeded \$100,000, since the common investor is not likely to have an investing budget exceeding \$100,000 for any single ticker.</p>
+<p>Tickers where a <code>Close</code> or <code>AdjClose</code> price for any day exceeding \$100,000 were removed, since the common investor is not likely to have an investing budget exceeding \$100,000 for any single ticker. The user can adjust this to fit their budget or use the original <code>us_shareprices_daily</code> table.</p>
 </div>
 </div>
 </div>
@@ -9692,7 +9692,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next, I aggregated the daily stock prices into monthly prices.</p>
+<p>Next, the daily stock prices were converted to monthly prices.</p>
 </div>
 </div>
 </div>
@@ -9705,25 +9705,6 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">us_shareprices_monthly</span><span class="p">;</span>
-<span class="o">--</span> <span class="n">When</span> <span class="n">you</span> <span class="n">drop</span> <span class="n">the</span> <span class="n">table</span><span class="p">,</span> <span class="nb">all</span> <span class="n">indexes</span> <span class="n">disappear</span> <span class="n">automatically</span><span class="p">,</span> <span class="n">so</span> <span class="n">you</span> <span class="n">must</span> <span class="n">recreate</span> <span class="n">them</span><span class="o">.</span>
-
-<span class="o">--</span> <span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">shareprices_monthly</span> <span class="n">AS</span>
-<span class="o">--</span> <span class="n">SELECT</span> <span class="o">*</span>
-<span class="o">--</span> <span class="n">FROM</span> <span class="p">(</span>
-<span class="o">--</span>     <span class="n">SELECT</span>
-<span class="o">--</span>         <span class="n">Ticker</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">SimFinId</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="s1">'%Y-%m'</span><span class="p">)</span> <span class="n">AS</span> <span class="n">Month</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">Date</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">Close</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">AdjClose</span><span class="p">,</span>
-<span class="o">--</span>         <span class="n">ROW_NUMBER</span><span class="p">()</span> <span class="n">OVER</span> <span class="p">(</span>
-<span class="o">--</span>             <span class="n">PARTITION</span> <span class="n">BY</span> <span class="n">SimFinId</span><span class="p">,</span> <span class="n">DATE_FORMAT</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="s1">'%Y-%m'</span><span class="p">)</span>
-<span class="o">--</span>             <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">Date</span> <span class="n">DESC</span>
-<span class="o">--</span>         <span class="p">)</span> <span class="n">AS</span> <span class="n">rn</span>
-<span class="o">--</span>     <span class="n">FROM</span> <span class="n">us_shareprices_daily_filtered</span>
-<span class="o">--</span> <span class="p">)</span> <span class="n">x</span>
-<span class="o">--</span> <span class="n">WHERE</span> <span class="n">rn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
 <span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">us_shareprices_monthly</span> <span class="n">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
 
@@ -9778,7 +9759,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Dates-Lookup-Table">Dates Lookup Table<a class="anchor-link" href="#Dates-Lookup-Table">¶</a></h2><p>Dates are an important part of any analysis that uses fundamentals data. Market price dates don't always align with fundamentals dates. Moreover, there are many kinds of dates to consider. Any serious analysis would try to avoid lookback bias where we assume a decision based on information not yet known. To avoid this bias, the stock price date following the fundamentals publish date was collected.</p>
+<h2 id="Dates-Lookup-Table">Dates Lookup Table<a class="anchor-link" href="#Dates-Lookup-Table">¶</a></h2><p>Dates are an important part of any analysis that uses fundamentals data. Market price dates don't always align with fundamentals dates. Moreover, there are many kinds of dates to consider. Any serious analysis would try to avoid lookback bias where a decision based on information not yet known. To avoid this bias, the stock price date following the fundamentals publish date was collected.</p>
 <p>For backtesting decisions, it is often easier to use a regular month-end price date where the month-end date is the end of the month following the publish date. The month-end date following the publish date was calculated as the last day of the publish-date month or, if the publish date is within 3 days of the month end, the last day of the following month.</p>
 </div>
 </div>
@@ -11117,7 +11098,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># HideCell</span>
@@ -11135,7 +11116,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <span class="p">)</span>
 
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_cashflow_quality"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">"SELECT * FROM metrics_cashflow_quality WHERE FCFMargin IS NOT NULL"</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
 
 <span class="n">HTML</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
@@ -11148,7 +11129,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <table border="1" class="dataframe">
 <thead>
@@ -11162,6 +11143,27 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 </thead>
 <tbody>
 <tr>
+<td>ZTS</td>
+<td>2024-12-31</td>
+<td>1.5577</td>
+<td>0.2969</td>
+<td>1.1842</td>
+</tr>
+<tr>
+<td>ZUMZ</td>
+<td>2021-10-31</td>
+<td>0.6451</td>
+<td>0.0567</td>
+<td>0.5347</td>
+</tr>
+<tr>
+<td>ZUO</td>
+<td>2021-01-31</td>
+<td>-0.1668</td>
+<td>0.0260</td>
+<td>-0.1099</td>
+</tr>
+<tr>
 <td>ZUO</td>
 <td>2021-04-30</td>
 <td>-0.5804</td>
@@ -11174,27 +11176,6 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <td>1.2642</td>
 <td>-3.1242</td>
 <td>1.2912</td>
-</tr>
-<tr>
-<td>ZYNE</td>
-<td>2020-12-31</td>
-<td>0.7264</td>
-<td>NaN</td>
-<td>0.7329</td>
-</tr>
-<tr>
-<td>ZYNE</td>
-<td>2021-03-31</td>
-<td>1.0416</td>
-<td>NaN</td>
-<td>1.0416</td>
-</tr>
-<tr>
-<td>ZYNE</td>
-<td>2022-12-31</td>
-<td>0.7093</td>
-<td>NaN</td>
-<td>0.7102</td>
 </tr>
 </tbody>
 </table>
@@ -11224,6 +11205,7 @@ ALLR, APDN, APVO, BCAN, BRK-A, CETX, CJET, CYN, EJH, ERNA, EZGO, FFIE, GDHG, HCT
 <ol>
 <li>Fetching the raw data from SimFin via its native API. This could involve automated download, unzipping, and folder cleanup.</li>
 <li>Handling outlier values. For example, the stock prices contained extreme, probably incorrect data values. These could be deleted to ensure they do not affect subsequent calculations.</li>
+<li>Handling financial report restatements. Occasionally, financial report restatements occur and the date of the restatement should become the effective date of the reported financial figures.</li>
 </ol>
 </div>
 </div>
